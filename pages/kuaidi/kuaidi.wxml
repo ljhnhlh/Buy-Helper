@@ -1,0 +1,7 @@
+<view>发布快递</view>
+<view>快递点：<input id="express_loc" bindinput='express_loc_input'></input></view>
+<view>快递件数：<input id='num' bindinput='num_input'></input></view>
+<view>送达地址：<input id="loc" bindinput='loc_input'></input></view>
+<view>送达时间：<input id="arrive_time" bindinput='arrive_time_input'></input></view>
+<view>报酬：<input id='pay' bindinput='pay_input'></input></view>
+<button id='queRen' bindtap='tijiao' >确认发布</button>

@@ -1,0 +1,37 @@
+{
+  "pages":[
+    "pages/daigou/daigou",
+    "pages/Me/Me",
+    "pages/Message/Message",
+    "pages/Create/Create",
+    "pages/detail/detail",
+    "pages/kuaidi/kuaidi",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#bbb",
+    "navigationBarTitleText": "Gou",
+    "navigationBarTextStyle":"white"
+  },
+  "tabBar":{
+    "list":[{
+    "pagePath": "pages/daigou/daigou",
+    "text":"购",
+    "iconPath":"icons/icon.png",
+    "selectedIconPath":"icons/icon.png"
+  },{
+    "pagePath": "pages/Message/Message",
+    "text": "消息",
+    "iconPath": "icons/icon.png",
+    "selectedIconPath": "icons/icon.png"
+  },{
+    "pagePath": "pages/Me/Me",
+    "text": "我",
+    "iconPath": "icons/icon.png",
+    "selectedIconPath": "icons/icon.png"
+  }
+  ]
+}
+}

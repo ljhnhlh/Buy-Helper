@@ -1,0 +1,7 @@
+/* pages/detail/detail.wxss */
+.active{
+  color: pink;
+}
+.progress{
+  display: inline-block;
+}

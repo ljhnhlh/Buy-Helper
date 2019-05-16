@@ -5,3 +5,18 @@
 .progress{
   display: inline-block;
 }
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+
+}
+.cell{
+  flex: 1;
+}
+.btn{
+  width: 150rpx;
+  height: 100rpx;
+  color: green;
+}

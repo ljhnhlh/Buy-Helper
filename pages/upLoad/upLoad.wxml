@@ -1,0 +1,3 @@
+<cover-image src='{{imageUrl}}'></cover-image>
+<button bindtap='chooseImage'>上传图片</button>
+<image src=''></image>

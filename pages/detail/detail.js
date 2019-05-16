@@ -8,7 +8,11 @@ Page({
     type:0,
     gouItem:[
       {
-        "touxiang": '/icons/icon.png', 'niName': 'linjh', 'start':0,'detail': '帮忙买衣服', 'imageSrc': ['/icons/icon.png', '/icons/icon.png', '/icons/icon.png'],
+        "touxiang": '/icons/icon.png', 
+        'niName': 'linjh', 
+        'stars':5,
+        'detail': '帮忙买衣服', 
+        'imageSrc': '/icons/icon.png',
         'buyer':[
                 {'niName':'ljh','object':'tt','num':100,'payoff':'1w','state':'1','openid':'1'},
                 {'niName':'ljy','object':'aqm','num':100,'payoff':'5k','state':'0','openid':'0'}

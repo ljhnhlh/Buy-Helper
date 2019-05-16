@@ -5,7 +5,26 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    tabname: [{ 'message': '代购' }, { 'message': '求购' }],
+    show: false,
+    currentIndex: 0,
+    daigouItem:[{
+      nickName:"0.",
+      place:"广东广州",
+      description:"买东西",
+      state:1
+    }],
+    qiugouItem:[{
+      nickName: "0.",
+      place: "广东广州",
+      description: "买东西",
+      state: 1
+    }]
+  },
+  select_nav: function (e) {
+    this.setData({
+      currentIndex: e.target.dataset.index
+    })
   },
 
   /**

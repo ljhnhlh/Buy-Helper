@@ -1,2 +1,7 @@
-<!--pages/Me/Me.wxml-->
-<text>pages/Me/Me.wxml</text>
+<open-data type="userAvatarUrl"></open-data>
+<open-data type="userNickName"></open-data>
+
+<view>
+<!-- 扒一下界面-->
+<view bindtap='money_page'>钱包</view>
+</view>

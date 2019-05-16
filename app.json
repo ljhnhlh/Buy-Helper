@@ -1,10 +1,20 @@
 {
   "pages":[
-    "pages/daigou/daigou",
-    "pages/Me/Me",
-    "pages/Message/Message",
-    "pages/Create/Create",
     "pages/detail/detail",
+    "pages/Create/Create",
+    "pages/regisger/regisger",
+    
+    "pages/daigou/daigou",
+    "pages/upLoad/upLoad",
+
+    "pages/Me/Me",
+    "pages/personal/personal",
+    "pages/personal/my_balance/my_balance",
+    "pages/personal/my_info/my_info",
+    "pages/personal/service/service",
+    "pages/Message/Message",
+    
+    
     "pages/kuaidi/kuaidi",
     "pages/index/index",
     "pages/logs/logs"
@@ -27,7 +37,7 @@
     "iconPath": "icons/icon.png",
     "selectedIconPath": "icons/icon.png"
   },{
-    "pagePath": "pages/Me/Me",
+    "pagePath": "pages/personal/personal",
     "text": "我",
     "iconPath": "icons/icon.png",
     "selectedIconPath": "icons/icon.png"

@@ -1,12 +1,14 @@
 <!-- 代购界面 -->
   <!-- 详情 -->
-  <image src='{{gouItem[0].touxiang}}'></image>
-  <view>{{gouItem[0].niName}}</view>
-  <view>{{gouItem[0].stars}}</view>
+  <view class="header">
+  <image src='{{gouItem[0].touxiang}}' style="height:100rpx;width:100rpx;"></image>
+  <view >{{gouItem[0].niName}} </view>
+  <view >{{gouItem[0].stars}} </view>
+  </view>
     <!-- 描述 -->
   <text>{{gouItem[0].detail}}</text>
     <!-- 图片 -->
-  <image wx:for="{{gouItem[0].imageSrc}}" wx:key="{{index}}"  src="{{item}}" class='contentImage'></image>
+  <image   src="{{gouItem[0].imageSrc}}" class='contentImage'></image>
   <!-- 行程：准备，到达(票据)，返回(票据)，配送 -->
   <view wx:if="{{type == 0}}">行程:
   <view class="progress {{gouItem[0].state[0] == 1?'active':''}}">准备</view>
@@ -18,13 +20,16 @@
   <!-- 个人代购添加 -->
     <!-- for 列出已添加的用户 -->
   <view wx:if="{{type == 0}}">Order List</view>
-    <view wx:if="{{type == 0}}" wx:for="{{gouItem[0].buyer}}" wx:for-item="Item" style='border: black solid 1px;display:inline-block' wx:key="{{index}}" data-index='{{index}}' >
+    <view wx:if="{{type == 0}}"  wx:for="{{gouItem[0].buyer}}" wx:for-item="Item" style='border: black solid 1px;' wx:key="{{index}}" data-index='{{index}}' >
+      <view class="header">
       <view class=''>{{Item.niName}}</view>
       <view class=''>{{Item.object}}</view>
       <view class=''>{{Item.num}}</view>
       <view class=''>{{Item.payoff}}￥</view>
-      <button bindtap='' disabled='{{state == 1}}'>接受</button>
-      <button bindtap='getWeixing'>联系</button>
+      <button bindtap='' class=" btn" disabled='{{state == 1}}'>接受</button>
+      <button bindtap='getWeixing'class=" btn" >联系</button>
+    </view>
+      
     </view>
   <!-- 联系方式 -->
 <view wx:if="{{type == 1}}">payoff:{{gouItem[0].payoff}}￥</view>

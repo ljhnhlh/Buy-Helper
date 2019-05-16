@@ -1,2 +1,23 @@
-<!--pages/Message/Message.wxml-->
-<text>pages/Message/Message.wxml</text>
+<view id='tabBar'>
+<view  wx:for="{{tabname}}" wx:key = "{{index}}" data-index = "{{index}}"  class="tab {{currentIndex===index?'active':''}}" bindtap='select_nav'>{{item.message}}</view>
+</view>
+<view style='height:80rpx'></view>
+<view wx:if="{{currentIndex==0}}">
+<view wx:for="{{daigouItem}}" wx:key = "{{index}}" wx:for-item="item" data-index = "{{index}}" >
+  <view>
+    <view>{{item.nickName}}</view>
+    <view>{{item.place}}</view>
+  </view>
+  <text>{{item.description}}</text>
+  <view>{{item.state}}</view>
+</view>
+</view>
+
+<view wx:if="{{currentIndex==1}}" >
+<view wx:for="{{qiugouItem}}" wx:key = "{{index}}" wx:for-item="item" data-index = "{{index}}">
+    <view>{{item.nickName}}</view>
+  <view>{{item.place}}</view>
+  <text>{{item.description}}</text>
+  <view>{{item.state}}</view>
+</view>
+</view>

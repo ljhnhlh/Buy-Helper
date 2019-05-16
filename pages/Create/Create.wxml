@@ -1,2 +1,30 @@
-<!--pages/Create/Create.wxml-->
-<text>pages/Create/Create.wxml</text>
+<text wx:if="{{type==0}}" >创建代购</text>
+<text wx:if="{{type==1}}" >创建求购</text>
+
+<view>请输入代购地点</view>
+<picker bindchange="chooseCountry" value="{{index}}" range="{{Country}}">
+    <view class="picker">
+      国家：{{Country[index]}}
+    </view>
+</picker>
+
+<view wx:if="{{isChina}}" class="tui-picker-content">
+        <picker bindchange="ChooseRegion" mode = "region" value="{{region}}">
+          <view class="tui-picker-detail">
+          {{region[0]}}-{{region[1]}}-{{region[2]}}
+          </view>
+        </picker>
+</view>
+<view >地点详情<input /></view>
+
+<view wx:if="{{type==1}}">购品名称：<input content="asdflkfjds"/></view>
+<view>上传图片
+    <image class="" src="{{hasChosen?imagePath:'/icons/uploadImage.png'}}" bindtap="uploadImage" ></image>
+</view>
+<view>
+    <!-- 应该要用text -->
+    购品描述：<input value="..."/>
+</view> 
+<view>价格区间：
+    <input /> - <input /> ￥ </view>
+<button bindtap="CreateIssue">提交</button>

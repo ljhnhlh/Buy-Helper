@@ -1,1 +1,20 @@
-/* pages/Message/Message.wxss */
+.tab {
+    display: inline-block;
+    font-size: 30rpx;
+    font-display: center;
+    padding: 20rpx;
+    width: 100pt;
+}
+
+.active {
+    color: #de688b;
+    border-bottom: 5rpx solid #de688b;
+}
+#tabBar{
+  position: fixed;
+}
+.contentImage{
+  display: inline-block;
+  width: 20pt;
+  height: 20pt;
+}

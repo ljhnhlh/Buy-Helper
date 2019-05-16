@@ -5,7 +5,18 @@
     padding: 20rpx;
     width: 100pt;
 }
-
+.header{
+  display: flex;
+  flex-direction: row;
+}
+.touxiang{
+  width: 100rpx;
+  height: 100rpx;
+}
+.tupian{
+  width: 200rpx;
+  height: 200rpx;
+}
 .active {
     color: #de688b;
     border-bottom: 5rpx solid #de688b;

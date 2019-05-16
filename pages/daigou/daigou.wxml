@@ -1,17 +1,22 @@
 <view id='tabBar'>
-<view  wx:for="{{tabname}}" wx:key = "{{index}}" data-index = "{{index}}"  class="tab {{currentIndex===index?'active':''}}" bindtap='select_nav'>{{item.message}}</view>
+<view  wx:for="{{tabname}}" wx:key = "{{index}}" data-index = "{{index}}"  class="tab {{currentIndex===index?'active':''}}" bindtap='select_nav'>{{item.message}}
 </view>
-
+</view>
+<view style='height:80rpx'></view>
 <!-- 代购界面 -->
 <view wx:if="{{currentIndex==0}}">
   <view wx:for="{{daigouItem}}" wx:key="{{index}}" data-index="{{index}}" wx:for-item="Item"  style='border: black solid 1px' bindtap='daigou'>
-    <image src="{{Item.touxiang}}"></image> 
+    <view class='header'>
+    <image class='touxiang' src="{{Item.touxiang}}"></image> 
     <view>{{Item.niName}}</view>
     <view>{{Item.stars}}</view>
-    <image src="{{Item.imageSrc}}"></image>
+    </view>
+    <image class='tupian' src="{{Item.imageSrc}}"></image>
+    <view class='header'>
     <view>Country: {{Item.Country}}</view>
     <view>Place: {{Item.place}}</view>
     <view>order: {{Item.order}}</view>
+    </view>
   </view>
 </view>
 
@@ -32,7 +37,7 @@
 <view style='border:black solid 1px' >
   <view bindtap='CreateGou'>+</view>
   <view id='create' hidden='{{show}}' >
-    <view bindtap='daigou'>代购</view>
-    <view bindtap='qiugou'>求购</view>
+    <view bindtap='Createdaigou'>代购</view>
+    <view bindtap='Createqiugou'>求购</view>
   </view>
 </view>

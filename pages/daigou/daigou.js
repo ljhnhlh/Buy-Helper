@@ -20,6 +20,24 @@ Page({
     }]
 
   },
+  Createdaigou:function () {
+    wx.navigateTo({
+      url: '/pages/Create/?type=0',
+      fail: function() {
+        // fail
+        console.log("运行异常");
+        
+      }
+    })
+  },
+  Createqiugou:function () {  
+    wx.navigateTo({
+      url: '/pages/Create/?type=1',
+      fail: function() {
+        console.log("运行异常");
+      }
+    })
+  },
   select_nav:function(e){
     this.setData({
       currentIndex:e.target.dataset.index

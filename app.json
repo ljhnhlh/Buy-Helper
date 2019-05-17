@@ -1,47 +1,49 @@
 {
-  "pages":[
+  "pages": [
     "pages/detail/detail",
+    "pages/qiugou_detail/qiugou_detail",
+    
     "pages/Create/Create",
     "pages/regisger/regisger",
-    
     "pages/daigou/daigou",
     "pages/upLoad/upLoad",
-
     "pages/Me/Me",
     "pages/personal/personal",
     "pages/personal/my_balance/my_balance",
     "pages/personal/my_info/my_info",
     "pages/personal/service/service",
     "pages/Message/Message",
-    
-    
     "pages/kuaidi/kuaidi",
     "pages/index/index",
     "pages/logs/logs"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#bbb",
     "navigationBarTitleText": "Gou",
-    "navigationBarTextStyle":"white"
+    "navigationBarTextStyle": "white"
   },
-  "tabBar":{
-    "list":[{
-    "pagePath": "pages/daigou/daigou",
-    "text":"购",
-    "iconPath":"icons/icon.png",
-    "selectedIconPath":"icons/icon.png"
-  },{
-    "pagePath": "pages/Message/Message",
-    "text": "消息",
-    "iconPath": "icons/icon.png",
-    "selectedIconPath": "icons/icon.png"
-  },{
-    "pagePath": "pages/personal/personal",
-    "text": "我",
-    "iconPath": "icons/icon.png",
-    "selectedIconPath": "icons/icon.png"
-  }
-  ]
-}
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/daigou/daigou",
+        "text": "购",
+        "iconPath": "icons/icon.png",
+        "selectedIconPath": "icons/icon.png"
+      },
+      {
+        "pagePath": "pages/Message/Message",
+        "text": "消息",
+        "iconPath": "icons/icon.png",
+        "selectedIconPath": "icons/icon.png"
+      },
+      {
+        "pagePath": "pages/personal/personal",
+        "text": "我",
+        "iconPath": "icons/icon.png",
+        "selectedIconPath": "icons/icon.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
 }

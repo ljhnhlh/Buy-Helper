@@ -10,6 +10,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-content: center;
+  flex-wrap:wrap;
 
 }
 .cell{

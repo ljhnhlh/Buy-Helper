@@ -28,13 +28,13 @@ create table daigou(
 	foreign key(uid) references user(openid)
 )
 create table sub_daigou(
-	sdid int AUTO_INCREMENT,
+	sid int AUTO_INCREMENT,
 	uid varchar(32),
 	did int,
 	description text,
 	payment varchar(50),
 	status int,
-	primary key(sdid),
+	primary key(sid),
 	foreign key(uid) references user(openid),
 	foreign key(did) references daigou(did)
 	)
@@ -56,13 +56,13 @@ create table qiugou(
 	)
 
 create table sub_qiugou(
-	sdid int AUTO_INCREMENT,
+	sid int AUTO_INCREMENT,
 	uid varchar(32),
-	did int,
+	qid int,
 	description text,
 	payment varchar(50),
 	status int,
-	primary key(sdid),
+	primary key(sid),
 	foreign key(uid) references user(openid),
-	foreign key(did) references daigou(did)
+	foreign key(did) references qiugou(qid)
 	)

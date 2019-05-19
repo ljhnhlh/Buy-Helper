@@ -8,13 +8,12 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.UUID;
 
 import java.util.concurrent.TimeUnit;
@@ -80,6 +79,8 @@ public class Create {
         jsonObject.put("session_key", session_key);
         return jsonObject;
     }
+
+
     private int hasRegistered(String openid){
         try {
             return jdbcTemplate.queryForObject("select 1 from user where openid = ? limit 1;", new Object[]{openid}, int.class);
@@ -88,9 +89,14 @@ public class Create {
         }
     }
     private String getOpenidFromSession(String sessionId){
-        String key =  stringRedisTemplate.opsForValue().get(sessionId);
-        JSONObject temp = (JSONObject) JSON.parse(key);
-        String openid = temp.getString("openid");
+        String openid = "";
+        try {
+            String key =  stringRedisTemplate.opsForValue().get(sessionId);
+            JSONObject temp = (JSONObject) JSON.parse(key);
+            openid = temp.getString("openid");
+        }catch (Exception e){
+            System.out.println(e);
+        }
         return openid;
     }
     private JSONObject setSessionId(JSONObject res) {
@@ -161,4 +167,90 @@ public class Create {
         return rest;
     }
 
+    @RequestMapping(value = "/Gou", method = RequestMethod.POST)
+    public  JSONObject CreateGou(@RequestHeader("sessionId")String sessionId,@RequestParam("type")int type, @RequestParam("destination") String destination,@RequestParam("description")String description,@RequestParam("imageUrl") String imageUrl,@RequestParam("last_for_time")String last_for_time){
+        String openid = getOpenidFromSession(sessionId);
+        JSONObject res = new JSONObject();
+        if(openid.length() < 10)
+        {
+            res.put("errcode",-1);
+            res.put("errmsg","please login");
+            return res;
+        }
+        String sql;
+        if(type == 0){//0为代购，1为求购
+            sql = "insert  into buy_helper.daigou(uid,destination,description,imageUrl,status,last_for_time)values (?,?,?,?,0,?)";
+        }
+        else {
+            sql = "insert  into buy_helper.qiugou(uid,destination,description,imageUrl,status,last_for_time)values (?,?,?,?,0,?)";
+        }
+        int t = 0;
+        try{
+            t = jdbcTemplate.update(sql,openid,destination,description,imageUrl,last_for_time);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        if(t <= 0){
+            res.put("errmsg","create failed");
+        }
+        else{
+            res.put("errmsg","create successfully");
+        }
+        res.put("errcode",t);
+        return  res;
+    }
+    @RequestMapping(value = "/SubGou",method = RequestMethod.POST)
+    public JSONObject CreateSubGou(@RequestHeader("sessionId")String sessionId,@RequestParam("type")int type,@RequestParam("id")int id,@RequestParam("description")String description,@RequestParam("payment")String payment){
+        String openid = getOpenidFromSession(sessionId);
+        JSONObject res = new JSONObject();
+        if(openid.length() < 10)
+        {
+            res.put("errcode",-1);
+            res.put("errmsg","please login");
+            return res;
+        }
+        String sql;
+        if(type == 0){//0为代购，1为求购
+            sql = "insert  into buy_helper.sub_daigou(uid,did,description,payment,status)values (?,?,?,?,0)";
+        }
+        else {
+            sql = "insert  into buy_helper.sub_qiugou(uid,qid,description,payment,status)values (?,?,?,?,0)";
+        }
+        int t = 0;
+        try{
+            t = jdbcTemplate.update(sql,openid,id,description,payment);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+        if(t <= 0){
+            res.put("errmsg","create failed");
+        }
+        else{
+            res.put("errmsg","create successfully");
+        }
+        res.put("errcode",t);
+        return  res;
+    }
+    @RequestMapping(value = "onShow",method = RequestMethod.GET)
+    public List<sub_gou> LoadSubGou(@RequestParam("type")int type,@RequestParam("id")int id){
+        return loadSubGou(type,id);
+    }
+    private List<sub_gou> loadSubGou(int type,int id){
+        String sql = "";
+        if(type == 0)
+        {
+            sql = "select * from buy_help.sub_daigou where sid = ?";
+        }else {
+            sql = "select * from buy_help.sub_qiugou where sid = ?";
+        }
+        try {
+            return  jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(sub_gou.class));
+        }catch (Exception e){
+            System.out.println(e);
+            return  null;
+        }
+    }
+    
 }

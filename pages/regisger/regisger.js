@@ -65,28 +65,39 @@ Page({
   bindGetUserInfo(e){
     var that = this;
     wx.login({
-      success:function(res){
-        console.log(res.code)
-        var code = res.code;
-        wx.request({
-          url: 'http://172.18.32.138:8080/Create/User',
-          data :{
-            code:code,
-            gender: e.detail.userInfo.gender,
-            nickName: e.detail.userInfo.nickName,
-            avatarUrl: e.detail.userInfo.avatarUrl
-          },
-          header: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          method:'POST',
-          success(res) {
-            console.log(res)
-          }
-        })
-      
+      success: function(res){
+        console.log(res);
+      },
+      fail: function() {
+        // fail
+      },
+      complete: function() {
+        // complete
       }
     })
+    // wx.login({
+    //   success:function(res){
+    //     console.log(res.code)
+    //     var code = res.code;
+    //     wx.request({
+    //       url: 'http://172.18.32.138:8080/Create/User',
+    //       data :{
+    //         code:code,
+    //         gender: e.detail.userInfo.gender,
+    //         nickName: e.detail.userInfo.nickName,
+    //         avatarUrl: e.detail.userInfo.avatarUrl
+    //       },
+    //       header: {
+    //         "Content-Type": "application/x-www-form-urlencoded"
+    //       },
+    //       method:'POST',
+    //       success(res) {
+    //         console.log(res)
+    //       }
+    //     })
+      
+    //   }
+    // })
   },
   // bindGetUserInfo(e) {
   //   var login1 = login();

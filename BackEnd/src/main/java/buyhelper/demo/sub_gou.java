@@ -6,6 +6,8 @@ public class sub_gou {
     private String description;
     private String payment;
     private int status;
+    private String avatarUrl;
+
 
     public int getSid() {
         return sid;
@@ -48,5 +50,13 @@ public class sub_gou {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

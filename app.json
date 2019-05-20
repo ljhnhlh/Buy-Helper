@@ -1,14 +1,16 @@
 {
   "pages": [
+    "pages/detail/detail",
+    "pages/daigou/daigou",
     "pages/regisger/regisger",
     "pages/personal/personal",
     "pages/Me/Me",
-    "pages/detail/detail",
+    
     "pages/qiugou_detail/qiugou_detail",
     
     "pages/Create/Create",
     
-    "pages/daigou/daigou",
+    
     "pages/upLoad/upLoad",
     
     

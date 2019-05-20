@@ -26,7 +26,6 @@ public class Create {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private JSONObject jsonObject;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
@@ -79,7 +78,6 @@ public class Create {
         jsonObject.put("session_key", session_key);
         return jsonObject;
     }
-
 
     private int hasRegistered(String openid){
         try {
@@ -233,17 +231,17 @@ public class Create {
         res.put("errcode",t);
         return  res;
     }
-    @RequestMapping(value = "onShow",method = RequestMethod.GET)
+    @RequestMapping(value = "/onShow",method = RequestMethod.GET)
     public List<sub_gou> LoadSubGou(@RequestParam("type")int type,@RequestParam("id")int id){
         return loadSubGou(type,id);
     }
     private List<sub_gou> loadSubGou(int type,int id){
-        String sql = "";
+        String sql;
         if(type == 0)
         {
-            sql = "select * from buy_help.sub_daigou where sid = ?";
+            sql = "sid,uid,description,payment,sub_daigou.status,avatarUrl from buy_helper.sub_daigou,buy_helper.user where did = ? and uid = openid;";
         }else {
-            sql = "select * from buy_help.sub_qiugou where sid = ?";
+            sql = "select sid,uid,description,payment,sub_qiugou.status,avatarUrl from buy_helper.sub_qiugou,buy_helper.user where qid = ? and uid = openid;";
         }
         try {
             return  jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(sub_gou.class));
@@ -252,5 +250,90 @@ public class Create {
             return  null;
         }
     }
-    
+
+    @RequestMapping(value = "/onLoad",method = RequestMethod.GET)
+    public JSONObject onLoad(@RequestParam("type")int type){
+        //头像，昵称，星星，地点，描述,id
+
+        String sql;
+        int id;
+        JSONObject jsonObject = new JSONObject();
+        if(type == 0){
+            // 获取最大的id，即最新的消息id，找出15条返回
+            id = jdbcTemplate.queryForObject("SELECT COUNT(did) AS NumberOfProducts FROM daigou;", int.class);
+            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time from daigou, user where did <= ? and uid = openid order by did DESC limit 15";
+        }else {
+            id = jdbcTemplate.queryForObject("SELECT COUNT(did) AS NumberOfProducts FROM qiugou;", int.class);
+            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time from qiugou, user where did <= ? and uid = openid order by did DESC limit 15";
+        }
+        try{
+            List<LoadGou> temp = jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(LoadGou.class));
+            jsonObject.put("errcode",1);
+            jsonObject.put("errmsg","load successfully");
+            jsonObject.put("list",temp.toString());
+
+        }catch (Exception e){
+            System.out.println(e);
+            jsonObject.put("errcode",0);
+            jsonObject.put("errmsg","load Failed");
+
+        }
+        return  jsonObject;
+    }
+
+    @RequestMapping(value = "downLoad",method = RequestMethod.GET)
+    public JSONObject downLoad(@RequestParam("type")int type,@RequestParam("id")int id){
+        String sql;
+
+        JSONObject jsonObject = new JSONObject();
+        if(type == 0){
+            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time from daigou, user where did <= ? and uid = openid order by did DESC limit 15";
+        }else {
+            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time from qiugou, user where did <= ? and uid = openid order by did DESC limit 15";
+        }
+        try{
+            List<LoadGou> temp = jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(LoadGou.class));
+            jsonObject.put("errcode",1);
+            jsonObject.put("errmsg","load successfully");
+            jsonObject.put("list",temp.toString());
+
+        }catch (Exception e){
+            System.out.println(e);
+            jsonObject.put("errcode",0);
+            jsonObject.put("errmsg","load Failed");
+
+        }
+        return  jsonObject;
+    }
+
+    @RequestMapping(value = "/detail_daigou",method= RequestMethod.GET)
+    public JSONObject DetailDaigou(@RequestParam("id")int id){
+        String sql = "select imageUrl,status1_image,status2_image,status from daigou where did = ?";
+        JSONObject jsonObject = new JSONObject();
+        try{
+            List<detail_daigou> temp = jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(detail_daigou.class));
+            jsonObject.put("errcode",1);
+            jsonObject.put("errmsg","create successfully");
+            jsonObject.put("list",temp.toString());
+        }catch (Exception e){
+            jsonObject.put("errcode",0);
+            jsonObject.put("errmsg","create failed");
+        }
+        return jsonObject;
+    }
+    @RequestMapping(value = "/detail_qiugou",method= RequestMethod.GET)
+    public JSONObject DetailQiugou(@RequestParam("id")int id){
+        String sql = "select avatarUrl,nickname,stars,imageUrl,status1_image,status2_image,status from qiugou,user where did = ? and uid2 = openid";
+        JSONObject jsonObject = new JSONObject();
+        try{
+            List<detail_daigou> temp = jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(detail_daigou.class));
+            jsonObject.put("errcode",1);
+            jsonObject.put("errmsg","create successfully");
+            jsonObject.put("list",temp.toString());
+        }catch (Exception e){
+            jsonObject.put("errcode",0);
+            jsonObject.put("errmsg","create failed");
+        }
+        return jsonObject;
+    }
 }

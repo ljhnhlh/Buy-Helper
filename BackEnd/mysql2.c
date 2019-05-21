@@ -17,6 +17,7 @@ create table user(
 create table daigou(
 	did int AUTO_INCREMENT,
 	uid varchar(32) NOT NULL,
+	uid2 varchar(32),
 	destination varchar(100),
 	description text,
 	imageUrl text,
@@ -26,7 +27,8 @@ create table daigou(
 	last_for_time varchar(100),
 	issue_time	datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	primary key(did),
-	foreign key(uid) references user(openid)
+	foreign key(uid) references user(openid),
+	foreign key(uid2) references user(openid)
 );
 create table sub_daigou(
 	sid int AUTO_INCREMENT,

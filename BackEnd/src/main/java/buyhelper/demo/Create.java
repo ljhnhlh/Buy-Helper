@@ -239,9 +239,9 @@ public class Create {
         String sql;
         if(type == 0)
         {
-            sql = "sid,uid,description,payment,sub_daigou.status,avatarUrl from buy_helper.sub_daigou,buy_helper.user where did = ? and uid = openid;";
+            sql = "sid,description,payment,sub_daigou.status,avatarUrl from buy_helper.sub_daigou,buy_helper.user where did = ? and uid = openid;";
         }else {
-            sql = "select sid,uid,description,payment,sub_qiugou.status,avatarUrl from buy_helper.sub_qiugou,buy_helper.user where qid = ? and uid = openid;";
+            sql = "select sid,description,payment,sub_qiugou.status,avatarUrl from buy_helper.sub_qiugou,buy_helper.user where qid = ? and uid = openid;";
         }
         try {
             return  jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(sub_gou.class));
@@ -336,4 +336,57 @@ public class Create {
         }
         return jsonObject;
     }
+
+    @RequestMapping(value = "/ReceiveGou",method = RequestMethod.GET)
+    public JSONObject ReceiveGou(@RequestParam("sessionId")String sessionId,@RequestParam("type")int type,@RequestParam("id")int id){
+        String openid = getOpenidFromSession(sessionId);
+        String sql;
+        if(type == 0){
+            sql = "update daigou set uid2 = ?,status = 1 where status = 0 and did = ? ";
+        }else {
+            sql = "update qiugou set uid2 = ?,status = 1 where status = 0 and did = ? ";
+        }
+        JSONObject jsonObject = new JSONObject();
+        int t = 0;
+        try {
+            t = jdbcTemplate.update(sql,openid,id);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        if(t == 1){
+            jsonObject.put("errmsg","accept suc");
+        }else {
+            jsonObject.put("errmsg","accept failed");
+        }
+        jsonObject.put("errcode",t);
+        return jsonObject;
+    }
+
+    @RequestMapping(value = "/ReceiveSubGou",method = RequestMethod.GET)
+    public JSONObject ReceiveSubGou(@RequestParam("sessionId")String sessionId,@RequestParam("type")int type,@RequestParam("id")int id,@RequestParam("did") int did){
+//        subgou 缺了uid2，要不要补上
+//        String openid = getOpenidFromSession(sessionId);
+//        String sql;
+//
+//        if(type == 0){
+//            sql = "update sub_daigou set status = 1 where status = 0 and sid = ? and daigou.  = ? and ";
+//        }else {
+//            sql = "update sub_qiugou set status = 1 where status = 0 and sid = ? ";
+//        }
+//        JSONObject jsonObject = new JSONObject();
+//        int t = 0;
+//        try {
+//            t = jdbcTemplate.update(sql,openid,id);
+//        }catch (Exception e){
+//            System.out.println(e);
+//        }
+//        if(t == 1){
+//            jsonObject.put("errmsg","accept suc");
+//        }else {
+//            jsonObject.put("errmsg","accept failed");
+//        }
+//        jsonObject.put("errcode",t);
+//        return jsonObject;
+    }
+
 }

@@ -2,7 +2,6 @@ package buyhelper.demo;
 
 public class sub_gou {
     private int sid;
-    private String uid;
     private String description;
     private String payment;
     private int status;
@@ -43,15 +42,6 @@ public class sub_gou {
     sub_gou(){
 
     }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     public String getAvatarUrl() {
         return avatarUrl;
     }

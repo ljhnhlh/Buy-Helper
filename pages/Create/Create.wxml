@@ -15,16 +15,16 @@
           </view>
         </picker>
 </view>
-<view >地点详情<input /></view>
+<view >地点详情<input bindinput="loc_detail" /></view>
 
-<view wx:if="{{type==1}}">购品名称：<input content="asdflkfjds"/></view>
+<!-- <view wx:if="{{type==1}}">购品名称：<input content="asdflkfjds"/></view> -->
 <view>上传图片
     <image class="" src="{{hasChosen?imagePath:'/icons/uploadImage.png'}}" bindtap="uploadImage" ></image>
 </view>
 <view>
     <!-- 应该要用text -->
-    购品描述：<input value="..."/>
+    购品描述：<input bindinput="gou_detail" value="..."  />
 </view> 
-<view>价格区间：
-    <input /> - <input /> ￥ </view>
+<!-- <view>价格区间：
+    <input bindinput="price1"/> - <input bindinput="price2"/> ￥ </view> -->
 <button bindtap="CreateIssue">提交</button>

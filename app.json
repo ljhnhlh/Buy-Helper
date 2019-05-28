@@ -2,18 +2,13 @@
   "pages": [
     "pages/detail/detail",
     "pages/daigou/daigou",
+    "pages/Create/Create",
+    "pages/register/register",
     "pages/regisger/regisger",
     "pages/personal/personal",
     "pages/Me/Me",
-    
     "pages/qiugou_detail/qiugou_detail",
-    
-    "pages/Create/Create",
-    
-    
     "pages/upLoad/upLoad",
-    
-    
     "pages/personal/my_balance/my_balance",
     "pages/personal/my_info/my_info",
     "pages/personal/service/service",

@@ -59,6 +59,7 @@ Page({
       index: e.detail.value
     })
   },
+  
   onLoad: function (options) {
 
   },

@@ -2,6 +2,7 @@ package buyhelper.demo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
@@ -108,14 +109,14 @@ public class Create {
         JSONObject time = new JSONObject();
         if (hasRegistered(openid) == 1) {
             //生成sessionId
-            String SessionId = UUID.randomUUID().toString();
+            String sessionId = UUID.randomUUID().toString();
             //存入redis
-            stringRedisTemplate.opsForValue().set(SessionId, RedisSession.toString(), 60, TimeUnit.MINUTES);
+            stringRedisTemplate.opsForValue().set(sessionId, RedisSession.toString(), 60, TimeUnit.MINUTES);
 
             //返回sessionId
             time.put("errcode",1);
             time.put("errmsg","Login in successfully");
-            time.put("SessionId", SessionId);
+            time.put("sessionId", sessionId);
             time.put("expireTime", 60);
         }else{
             time.put("errcode",0);
@@ -146,7 +147,7 @@ public class Create {
 //        String session_key = res.getString("session_key");
         int t = 0;
         try{
-             t = jdbcTemplate.update("insert into buy_helper.user(openid,nickname,avatarUrl,gender,stars,status)values (?,?,?,?,3,0)", openid, nickName, avatarUrl, gender);
+            t = jdbcTemplate.update("insert into buy_helper.user(openid,nickname,avatarUrl,gender,stars,status)values (?,?,?,?,3,0)", openid, nickName, avatarUrl, gender);
         }catch (Exception e){
             System.out.println(e);
         }
@@ -159,7 +160,7 @@ public class Create {
             rest.put("errcode", t);
             rest.put("errmsg", "create user successfully");
             JSONObject session = setSessionId(res);
-            rest.put("SessionId", session.getString("SessionId"));
+            rest.put("sessionId", session.getString("sessionId"));
             rest.put("expireTime", session.getInteger("expireTime"));
         }
         return rest;
@@ -338,7 +339,7 @@ public class Create {
     }
 
     @RequestMapping(value = "/ReceiveGou",method = RequestMethod.GET)
-    public JSONObject ReceiveGou(@RequestParam("sessionId")String sessionId,@RequestParam("type")int type,@RequestParam("id")int id){
+    public JSONObject ReceiveGou(@RequestHeader("sessionId") String sessionId,@RequestParam("type")int type,@RequestParam("id")int id){
         String openid = getOpenidFromSession(sessionId);
         String sql;
         if(type == 0){
@@ -362,31 +363,138 @@ public class Create {
         return jsonObject;
     }
 
+
+
     @RequestMapping(value = "/ReceiveSubGou",method = RequestMethod.GET)
-    public JSONObject ReceiveSubGou(@RequestParam("sessionId")String sessionId,@RequestParam("type")int type,@RequestParam("id")int id,@RequestParam("did") int did){
-//        subgou 缺了uid2，要不要补上
-//        String openid = getOpenidFromSession(sessionId);
-//        String sql;
-//
-//        if(type == 0){
-//            sql = "update sub_daigou set status = 1 where status = 0 and sid = ? and daigou.  = ? and ";
-//        }else {
-//            sql = "update sub_qiugou set status = 1 where status = 0 and sid = ? ";
-//        }
-//        JSONObject jsonObject = new JSONObject();
-//        int t = 0;
-//        try {
-//            t = jdbcTemplate.update(sql,openid,id);
-//        }catch (Exception e){
-//            System.out.println(e);
-//        }
-//        if(t == 1){
-//            jsonObject.put("errmsg","accept suc");
-//        }else {
-//            jsonObject.put("errmsg","accept failed");
-//        }
-//        jsonObject.put("errcode",t);
-//        return jsonObject;
+    public JSONObject ReceiveSubGou(@RequestHeader("sessionId") String sessionId,@RequestParam("type")int type,@RequestParam("id")int id){
+//        subgou 缺了uid2，要不要补上？补上，方便很多
+        String openid = getOpenidFromSession(sessionId);
+        String sql;
+
+        if(type == 0){
+            sql = "update sub_daigou set status = 1,uid2 = ? where status = 0 and sid = ?";
+        }else {
+            sql = "update sub_qiugou set status = 1,uid2 = ? where status = 0 and sid = ? ";
+        }
+        JSONObject jsonObject = new JSONObject();
+        int t = 0;
+        try {
+            t = jdbcTemplate.update(sql,openid,id);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        if(t == 1){
+            jsonObject.put("errmsg","accept suc");
+        }else {
+            jsonObject.put("errmsg","accept failed");
+        }
+        jsonObject.put("errcode",t);
+        return jsonObject;
     }
+    //    更改状态
+//    1 to 2 需要图片  启程
+//    2 to 3 需要图片  到达
+//    3 to 4 需要图片  返回
+//    4 to 5 订单完成
+//    因此需要两个接口，一个图片+状态，另一个需要状态
+//    额外信息：sessionId，订单id
+    @RequestMapping(value = "/ChangeStatues",method = RequestMethod.POST)
+    public JSONObject ChangeStatues(@RequestHeader("sessionId")String sessionId,@RequestParam("status")int status,@RequestParam("type")int type,@RequestParam("id")int id,@RequestParam("imageUrl")String imageUrl){
+        String sql;
+        String table;
+        String uid;
+        String openid = getOpenidFromSession(sessionId);
+        JSONObject jsonObject = new JSONObject();
+        int t = 0;
+        if(type == 0){
+            table = "daigou";
+            uid = "uid";
+        }
+        else {
+            table = "qiugou";
+            uid = "uid2";
+        }
+
+        switch (status){
+            case 1:sql = "update ? set status = ?,status1_image = %s where did = ?,? = ?;".format(imageUrl); break;
+            case 2:sql = "update ? set status = ? where did = ?,? = ?;";break;
+            case 3:sql = "update ? set status = ?,status2_image = %s where did = ?,? = ?;".format(imageUrl);break;
+            default:sql = "update ? set status = ? where did = ?,? = ?;";break;
+        }
+        try{
+           t =  jdbcTemplate.update(sql,table,status+1,id,uid,openid);
+           jsonObject.put("errmsg","update suc");
+        }catch (Exception e){
+            jsonObject.put("errmsg","update failed");
+            System.out.println(e);
+        }
+        jsonObject.put("errcode",t);
+        return jsonObject;
+//        status,session,type,imageUrl,
+    }
+
+//
+//    subgou的确认订单并评价stars
+    @RequestMapping(value = "/FinishSubgou",method = RequestMethod.POST)
+    public JSONObject FinishSubgou(@RequestHeader("sessionId")String sessionId,@RequestParam("type")int type,@RequestParam("id")int id,@RequestParam("stars")int stars){
+
+        String openid = getOpenidFromSession(sessionId);
+        String sql;
+        String SelectUid2;
+        String getStars;
+        String updateStars;
+        List<String> uid2;
+        List<stars> starsAndNum;
+        if(type == 0){
+
+            sql = "update sub_daigou set status = 2 where sid = ?;";
+            SelectUid2 = "select uid2 from sub_daigou where sid = ?";
+            getStars = "select stars,num from user where openid = ?";
+            updateStars = "update sub_daigou set stars = ?,num = ? where openid = ?";
+        } else{
+            sql = "update sub_qiugou set status = 2 where sid = ?;";
+            SelectUid2 = "select uid2 from sub_qiugou where sid = ?;";
+            getStars = "select stars,num from user where openid = ?;";
+            updateStars = "update user set stars = ?,num = ? where openid = ?;";
+        }
+        int t = 0;
+        int t1 = 0;
+        try{
+            t = jdbcTemplate.update(sql,id);
+            uid2 = jdbcTemplate.query(SelectUid2,new Object[]{id},new BeanPropertyRowMapper(String.class));
+
+            starsAndNum = jdbcTemplate.query(getStars,new Object[]{uid2.get(0)},new BeanPropertyRowMapper(stars.class));
+            int num = starsAndNum.get(0).getNum();
+            int sta = starsAndNum.get(0).getStars();
+            sta = (num * sta + stars)/(num+1);
+            t1 = jdbcTemplate.update(updateStars,sta,num+1);
+
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        JSONObject jsonObject = new JSONObject();
+        if(t == 1){
+            jsonObject.put("errmsg1","comfirm suc");
+        }else {
+            jsonObject.put("errmsg1","comfirm failed");
+        }
+        if(t1 == 1){
+            jsonObject.put("errmsg2","comfirm suc");
+        }else {
+            jsonObject.put("errmsg2","stars failed");
+        }
+        jsonObject.put("errcode1",t);
+        jsonObject.put("errcode2",t1);
+        return  jsonObject;
+    }
+
+//    @RequestMapping(value = "/FinishSubgou",method = RequestMethod.GET)
+//    public JSONObject FinishSubgou(@RequestParam())
+
+//    获取接单者的联系方式，貌似可以与下面的合并
+
+//    获取发单者的联系方式
+
 
 }

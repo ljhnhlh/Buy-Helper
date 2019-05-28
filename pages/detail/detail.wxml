@@ -1,33 +1,32 @@
 <!-- 代购界面 -->
   <!-- 详情 -->
   <view class="header">
-    <image src='{{gouItem[0].touxiang}}' style="height:100rpx;width:100rpx;"></image>
-    <view >{{gouItem[0].niName}} </view>
-    <!-- <view >{{gouItem[0].stars}} </view> -->
+    <image src='{{detail_info[0].avatarUrl}}' style="height:100rpx;width:100rpx;"></image>
+    <view >{{detail_info[0].nickName}} </view>
+    <!-- <view >{{detail_info[0].stars}} </view> -->
     <view class="stars" wx:for="{{starsItem}}" wx:key="index" wx:for-item="Item">
       <image  src="/icons/stars.png" style="width:50rpx;height:50rpx;"  />
       <!-- <view>{{Item}}</view> -->
     </view>
-   
   </view>
-  <view>{{gouItem[0].Address}}</view>
+  <view>{{detail_info[0].destination}}</view>
   
     <!-- 描述 -->
-  <text>{{gouItem[0].detail}}</text>
+  <text>{{detail_info[0].description}}</text>
     <!-- 图片 -->
-  <image   src="{{gouItem[0].imageSrc}}" class='contentImage'></image>
+  <image   src="{{detail_info[0].imageSrc}}" class='contentImage'></image>
   <!-- 行程：准备，到达(票据)，返回(票据)，配送 -->
   <view wx:if="{{type == 0}}">行程:
-  <view class="progress {{gouItem[0].state[0] == 1?'active':''}}">准备</view>
-  <view class="progress {{gouItem[0].state[1] == 1?'active':''}}">到达</view>
-  <view class="progress {{gouItem[0].state[2] == 1?'active':''}}">返回</view>
-  <view class="progress {{gouItem[0].state[3] == 1?'active':''}}">配送</view>
+  <view class="progress {{detail_info[0].state[0] == 1?'active':''}}">准备</view>
+  <view class="progress {{detail_info[0].state[1] == 1?'active':''}}">到达</view>
+  <view class="progress {{detail_info[0].state[2] == 1?'active':''}}">返回</view>
+  <view class="progress {{detail_info[0].state[3] == 1?'active':''}}">配送</view>
   </view>
 
   <!-- 个人代购添加 -->
     <!-- for 列出已添加的用户 -->
   <view wx:if="{{type == 0}}">预购</view>
-    <view wx:if="{{type == 0}}"  wx:for="{{gouItem[0].buyer}}" wx:for-item="Item" style='border: black solid 1px;' wx:key="{{index}}" data-index='{{index}}' >
+    <view wx:if="{{type == 0}}"  wx:for="{{detail_info[0].buyer}}" wx:for-item="Item" style='border: black solid 1px;' wx:key="{{index}}" data-index='{{index}}' >
       <view class="header">
       <view class=''>{{Item.niName}}</view>
       <view class=''>{{Item.object}}</view>
@@ -39,6 +38,6 @@
       
     </view>
   <!-- 联系方式 -->
-<view wx:if="{{type == 1}}">payoff:{{gouItem[0].payoff}}￥</view>
+<view wx:if="{{type == 1}}">payoff:{{detail_info[0].payoff}}￥</view>
 <button wx:if="{{type == 1}}" bindtap='TakeThisDaiGou'>接受</button>
-<button >联系方式</button>
+<button >联系方式</button> 

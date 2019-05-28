@@ -8,14 +8,13 @@
   <view wx:for="{{daigouItem}}" wx:key="{{index}}" data-index="{{index}}" wx:for-item="Item"  style='border: black solid 1px' bindtap='daigou'>
     <view class='header'>
     <image class='touxiang' src="{{Item.touxiang}}"></image> 
-    <view>{{Item.niName}}</view>
+    <view>{{Item.nickName}}</view>
     <view>{{Item.stars}}</view>
     </view>
-    <image class='tupian' src="{{Item.imageSrc}}"></image>
+    <view >{{Item.description}}</view>
     <view class='header'>
-    <view>Country: {{Item.Country}}</view>
-    <view>Place: {{Item.place}}</view>
-    <view>order: {{Item.order}}</view>
+    <view>位置：{{Item.destination}}</view>
+    <view>时间：{{Item.last_for_time}}</view>
     </view>
   </view>
 </view>
@@ -23,14 +22,16 @@
 <!-- 求购界面 -->
 <view wx:elif="{{currentIndex==1}}" hidden='{{currentIndex==0}}'>
   <view wx:for="{{qiugouItem}}" wx:key="{{index}}" wx:for-item="Item" data-index="{{index}}" bindtap='qiugou'>
-    <view style='border: black solid 1px'>
-      <image src="{{Item.touxiang}}"></image> 
-      <view>{{Item.niName}}</view>
+    <view class='header'>
+      <image class='touxiang' src="{{Item.touxiang}}"></image> 
+      <view>{{Item.nickName}}</view>
       <view>{{Item.stars}}</view>
-      <image src="{{Item.imageSrc}}"></image>
-      <view>Country: {{Item.Country}}</view>
-      <view>Place: {{Item.place}}</view>
-    </view>
+      </view>
+      <view >{{Item.description}}</view>
+      <view class='header'>
+      <view>位置：{{Item.destination}}</view>
+      <view>时间：{{Item.last_for_time}}</view>
+      </view>
   </view>
 </view>
 

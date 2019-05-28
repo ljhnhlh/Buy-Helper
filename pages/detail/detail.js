@@ -1,4 +1,6 @@
 // pages/detail/detail.js
+
+const app = getApp()
 Page({
 
   /**
@@ -6,37 +8,37 @@ Page({
    */
   data: {
     type:0,
-    gouItem:[
-      {
-        "touxiang": '/icons/icon.png', 
-        'niName': 'linjh', 
-        'stars':5,
-        'detail': '帮忙买衣服', 
-        'imageSrc': '/icons/icon.png',
-         Address:"广东广州",
-        'buyer':[
-                {'niName':'ljh','object':'tt','num':100,'payoff':'1w','state':'1','openid':'1'},
-                {'niName':'ljy','object':'aqm','num':100,'payoff':'5k','state':'0','openid':'0'}
-          ],
-        
-        'state':[1,1,0,0],
-        'payoff':100,
-        'contact':'wxx'
-      }
-      ],
-      starsItem:[]
+    detail_info:[{
+      did:0,
+      avatarUrl:'',
+      nickName:'',
+      stars:3,
+      destination:"",
+      description:'',
+      last_for_time:'',
+      
+    }],
+    'sub_gouItem':[
+      {'avatarUrl':'ljh','sid':0,'description':'','payment':0,'status':'1'},
+      {'avatarUrl':'ljh','sid':0,'description':'','payment':0,'status':'1'}
+    ],
+    starsItem:[]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
     var id = options.id;
     var type = options.type;
+    var detail_info = JSON.parse(app.globalData.detail_info)
     this.setData({
       type:type,
-      id:id
-    })
+      id:id,
+      detail_info:detail_info
+    })  
+    
 
     var stars = this.data.gouItem[0].stars;
     var stars = 5

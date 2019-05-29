@@ -240,7 +240,7 @@ public class Create {
         String sql;
         if(type == 0)
         {
-            sql = "sid,description,payment,sub_daigou.status,avatarUrl from buy_helper.sub_daigou,buy_helper.user where did = ? and uid = openid;";
+            sql = "select sid,description,payment,sub_daigou.status,avatarUrl from buy_helper.sub_daigou,buy_helper.user where did = ? and uid = openid;";
         }else {
             sql = "select sid,description,payment,sub_qiugou.status,avatarUrl from buy_helper.sub_qiugou,buy_helper.user where qid = ? and uid = openid;";
         }
@@ -262,16 +262,21 @@ public class Create {
         if(type == 0){
             // 获取最大的id，即最新的消息id，找出15条返回
             id = jdbcTemplate.queryForObject("SELECT COUNT(did) AS NumberOfProducts FROM daigou;", int.class);
-            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time from daigou, user where did <= ? and uid = openid order by did DESC limit 15";
+            System.out.println(id);
+            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time from daigou, user where did <= ? and uid = openid order by did DESC limit 15;";
         }else {
             id = jdbcTemplate.queryForObject("SELECT COUNT(did) AS NumberOfProducts FROM qiugou;", int.class);
-            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time from qiugou, user where did <= ? and uid = openid order by did DESC limit 15";
+            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time from qiugou, user where did <= ? and uid = openid order by did DESC limit 15;";
         }
         try{
+            System.out.println(id);
             List<LoadGou> temp = jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(LoadGou.class));
+            System.out.println(temp.get(0).getLast_for_time());
+            String t = temp.toString();
+            System.out.println(temp);
             jsonObject.put("errcode",1);
             jsonObject.put("errmsg","load successfully");
-            jsonObject.put("list",temp.toString());
+            jsonObject.put("list",temp);
 
         }catch (Exception e){
             System.out.println(e);
@@ -296,7 +301,7 @@ public class Create {
             List<LoadGou> temp = jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(LoadGou.class));
             jsonObject.put("errcode",1);
             jsonObject.put("errmsg","load successfully");
-            jsonObject.put("list",temp.toString());
+            jsonObject.put("list",temp);
 
         }catch (Exception e){
             System.out.println(e);
@@ -315,7 +320,7 @@ public class Create {
             List<detail_daigou> temp = jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(detail_daigou.class));
             jsonObject.put("errcode",1);
             jsonObject.put("errmsg","create successfully");
-            jsonObject.put("list",temp.toString());
+            jsonObject.put("list",temp);
         }catch (Exception e){
             jsonObject.put("errcode",0);
             jsonObject.put("errmsg","create failed");
@@ -416,13 +421,15 @@ public class Create {
         }
 
         switch (status){
-            case 1:sql = "update ? set status = ?,status1_image = %s where did = ?,? = ?;".format(imageUrl); break;
-            case 2:sql = "update ? set status = ? where did = ?,? = ?;";break;
-            case 3:sql = "update ? set status = ?,status2_image = %s where did = ?,? = ?;".format(imageUrl);break;
-            default:sql = "update ? set status = ? where did = ?,? = ?;";break;
+            case 1:sql = "update "+table+" set status = ?,status1_image = \'"+imageUrl+" \' where did = ? and "+uid+" = ?;"; break;
+            case 2:sql = "update "+table+" set status = ? where did = ? and "+ uid +" = ?;";break;
+            case 3:sql = "update "+table+" set status = ?,status2_image = \'"+imageUrl+"\' where did = ? and "+uid +" = ?;";break;
+            default:sql = "update "+table+" set status = ? where did = ? and "+uid+" = ?;";break;
         }
+        System.out.println(sql);
         try{
-           t =  jdbcTemplate.update(sql,table,status+1,id,uid,openid);
+
+           t =  jdbcTemplate.update(sql,status+1  ,id,openid);
            jsonObject.put("errmsg","update suc");
         }catch (Exception e){
             jsonObject.put("errmsg","update failed");
@@ -443,14 +450,14 @@ public class Create {
         String SelectUid2;
         String getStars;
         String updateStars;
-        List<String> uid2;
-        List<stars> starsAndNum;
+
+
         if(type == 0){
 
             sql = "update sub_daigou set status = 2 where sid = ?;";
-            SelectUid2 = "select uid2 from sub_daigou where sid = ?";
-            getStars = "select stars,num from user where openid = ?";
-            updateStars = "update sub_daigou set stars = ?,num = ? where openid = ?";
+            SelectUid2 = "select uid2 from sub_daigou where sid = ?;";
+            getStars = "select stars,num from user where openid = ?;";
+            updateStars = "update user set stars = ?,num = ? where openid = ?;";
         } else{
             sql = "update sub_qiugou set status = 2 where sid = ?;";
             SelectUid2 = "select uid2 from sub_qiugou where sid = ?;";
@@ -461,13 +468,14 @@ public class Create {
         int t1 = 0;
         try{
             t = jdbcTemplate.update(sql,id);
-            uid2 = jdbcTemplate.query(SelectUid2,new Object[]{id},new BeanPropertyRowMapper(String.class));
-
-            starsAndNum = jdbcTemplate.query(getStars,new Object[]{uid2.get(0)},new BeanPropertyRowMapper(stars.class));
+            List<uidClass> uid2 = jdbcTemplate.query(SelectUid2,new Object[]{id},new BeanPropertyRowMapper(uidClass.class));
+            System.out.println(uid2.get(0));
+            List<stars> starsAndNum = jdbcTemplate.query(getStars,new Object[]{uid2.get(0).getUid2()},new BeanPropertyRowMapper(stars.class));
+            System.out.println(starsAndNum);
             int num = starsAndNum.get(0).getNum();
             int sta = starsAndNum.get(0).getStars();
             sta = (num * sta + stars)/(num+1);
-            t1 = jdbcTemplate.update(updateStars,sta,num+1);
+            t1 = jdbcTemplate.update(updateStars,sta,num+1,uid2.get(0).getUid2());
 
 
         }catch (Exception e){

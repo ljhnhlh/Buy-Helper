@@ -3,7 +3,7 @@ package buyhelper.demo;
 public class LoadGou {
     private int did;
     private String avatarUrl;
-    private String nickName;
+    private String nickname;
     private int stars;
     private String destination;
     private String description;
@@ -26,11 +26,11 @@ public class LoadGou {
     }
 
     public String getNickname() {
-        return nickName;
+        return nickname;
     }
 
     public void setNickname(String nickname) {
-        this.nickName = nickname;
+        this.nickname = nickname;
     }
 
     public int getStars() {

@@ -1,1 +1,11 @@
 /* pages/register/register.wxss */
+.nickName{
+    position: relative;
+    margin-left: 45%;
+}
+.tou{
+    position: relative;
+    width: 600rpx;
+    height: 600rpx;
+    border-radius: 300rpx;
+}

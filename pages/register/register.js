@@ -21,8 +21,10 @@ Page({
     //注册
     wx.login({
       success: function(res){
+        console.log(res.code)
+        console.log(e.detail.userInfo.avatarUrl)
         wx.request({
-          url: 'https://172.18.32.138/Create/User',
+          url: 'http://172.18.32.138:3030/Create/User',
           data: {
             code:res.code,
             nickName:e.detail.userInfo.nickName,
@@ -30,12 +32,16 @@ Page({
             gender:e.detail.userInfo.gender
           },
           method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-          // header: {}, // 设置请求的 header
+          header: {"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
           success: function(res){
             if(res.errcode == 1){
               wx.switchTab({
                 url: '/pages/daigou/daigou'
               })
+            }
+            else{
+              console.log(res);
+              
             }
           },
           fail: function() {

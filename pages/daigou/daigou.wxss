@@ -29,3 +29,31 @@
   width: 20pt;
   height: 20pt;
 }
+.cre{
+  position: fixed;
+  right: 100rpx;
+  bottom: 100rpx;
+  z-index: 2;
+  background-color: aquamarine;
+}
+.add{
+  position: fixed;
+  right: 40rpx;
+  bottom: 50rpx;
+  border-radius: 40rpx;
+  width: 80rpx;
+  height: 80rpx;
+  background-color: aquamarine;
+  z-index: 1;
+}
+.inadd{
+  padding-left: 25rpx;
+  padding-top: 10rpx;
+}
+.desc{
+  width: 600rpx;
+  margin-top: 5rpx;
+  margin-bottom: 5rpx;
+  margin-left: 40rpx;
+  margin-right: 10rpx;
+}

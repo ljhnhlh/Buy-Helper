@@ -7,4 +7,9 @@
   justify-content: space-between;
   padding: 200rpx 0;
   box-sizing: border-box;
+  background-color: #F3F3F3;
+
 } 
+page{
+  background-color: #F3F3F3;
+}

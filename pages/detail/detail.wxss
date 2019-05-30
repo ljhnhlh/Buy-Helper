@@ -8,16 +8,43 @@
 .header{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-content: center;
-  flex-wrap:wrap;
-
 }
 .cell{
   flex: 1;
 }
 .btn{
-  width: 150rpx;
-  height: 100rpx;
+  width: 160rpx;
+  height: 70rpx;
   color: green;
+  text-align: center;
+  font-size: 30rpx;
+  margin-top: 20rpx;
+}
+.title{
+  position: relative;
+  left: 45%;
+  font-size: 50rpx;
+  /* color: rgb(137, 216, 127); */
+}
+.whole{
+  margin: 10rpx;
+  background-color: #fff;
+}
+image{
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  margin-bottom: 10rpx;
+  width: 700rpx;
+  height: 600rpx;
+
+}
+.stars{
+  margin-top: 30rpx;
+}
+.desc{
+  width: 600rpx;
+  margin-top: 5rpx;
+  margin-bottom: 5rpx;
+  margin-left: 40rpx;
+  margin-right: 10rpx;
 }

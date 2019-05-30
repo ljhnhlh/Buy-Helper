@@ -1,9 +1,14 @@
 {
   "pages": [
-    "pages/detail/detail",
+    
     "pages/daigou/daigou",
     "pages/Create/Create",
     "pages/register/register",
+    
+    "pages/detail/detail",
+    
+
+    
     "pages/regisger/regisger",
     "pages/personal/personal",
     "pages/Me/Me",
@@ -23,6 +28,7 @@
     "navigationBarTitleText": "Gou",
     "navigationBarTextStyle": "white"
   },
+
   "tabBar": {
     "list": [
       {

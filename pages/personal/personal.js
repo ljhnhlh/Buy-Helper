@@ -4,7 +4,8 @@ Page({
   data: {
     nickname: "小明",
     phone: 15167496318,
-    user_img: "http://img.52z.com/upload/news/image/20180213/20180213062641_35687.jpg"
+    user_img: "http://img.52z.com/upload/news/image/20180213/20180213062641_35687.jpg",
+    show:["个人信息","二恶"]
   },
   goTo_info: function () {
     wx.navigateTo({

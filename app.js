@@ -64,5 +64,9 @@ App({
   },
   onError: function (msg) {
     
+  },
+  globalData: {
+    sessionId: null,
+    detail_info:null
   }
 })

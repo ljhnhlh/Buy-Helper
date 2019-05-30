@@ -1,1 +1,23 @@
 /* pages/Create/Create.wxss */
+input {
+    background-color: rgb(235, 230, 230);
+    font-weight: 100;
+    
+}
+image{
+    position: relative;
+    left: 30%;
+}
+.pick{
+    color: rgb(137, 216, 127);
+}
+button{
+    position: relative;
+
+}
+.title{
+    position: relative;
+    left: 30%;
+    font-size: 60rpx;
+    color: rgb(137, 216, 127);
+}

@@ -4,23 +4,40 @@
 </view>
 <view style='height:80rpx'></view>
 <!-- 代购界面 -->
-<view wx:if="{{currentIndex==0}}">
-  <view wx:for="{{daigouItem}}" wx:key="{{index}}" data-index="{{index}}" wx:for-item="Item"  style='border: black solid 1px' bindtap='daigou'>
+<view wx:if="{{currentIndex==0}}" style="margin: 10rpx;background-color: #fff;">
+  <view wx:for="{{daigouItem}}" style="margin-bottom: 30rpx;border-bottom: solid #F3F3F3 10rpx;" wx:key="{{index}}" data-index="{{index}}" wx:for-item="Item"   bindtap='daigou'>
     <view class='header'>
-    <image class='touxiang' src="{{Item.touxiang}}"></image> 
-    <view>{{Item.nickName}}</view>
-    <view>{{Item.stars}}</view>
+    <image class='touxiang' src="{{Item.avatarUrl}}"></image> 
+    <view style="margin-left: 20rpx;margin-top: 20rpx;" >{{Item.nickname}}</view>
+    <view  class="stars" style="margin-left: 20rpx;margin-top: 20rpx;" wx:for="{{starsItem[index]}}" wx:key="index" wx:for-item="Item">
+        <image  src="/icons/stars.png" style="width:50rpx;height:50rpx;"  />
     </view>
-    <view >{{Item.description}}</view>
+    </view>
+    <view class="desc" >{{Item.description}}</view>
     <view class='header'>
-    <view>位置：{{Item.destination}}</view>
-    <view>时间：{{Item.last_for_time}}</view>
+    <view style="margin-left: 10rpx;font-size: 30rpx;color: lightgray;">位置：{{Item.destination}}</view>
     </view>
   </view>
 </view>
 
+<view wx:if="{{currentIndex==1}}" style="margin: 10rpx;">
+  <view wx:for="{{qiugouItem}}" style="margin-bottom: 10rpx;background-color: #fff;" wx:key="{{index}}" data-index="{{index}}" wx:for-item="Item"   bindtap='qiugou'>
+    <view class='header'>
+    <image class='touxiang' src="{{Item.avatarUrl}}"></image> 
+    <view style="margin-left: 20rpx;margin-top: 20rpx;" >{{Item.nickname}}</view>
+    <view  class="stars" style="margin-left: 20rpx;margin-top: 20rpx;" wx:for="{{starsItem[index]}}" wx:key="index" wx:for-item="Item">
+        <image  src="/icons/stars.png" style="width:50rpx;height:50rpx;"  />
+       
+    </view>
+    </view>
+    <view class="desc" >{{Item.description}}</view>
+    <view class='header'>
+    <view style="margin-left: 10rpx;font-size: 30rpx;color: lightgray;">位置：{{Item.destination}}</view>
+    </view>
+  </view>
+</view>
 <!-- 求购界面 -->
-<view wx:elif="{{currentIndex==1}}" hidden='{{currentIndex==0}}'>
+<!-- <view wx:elif="{{currentIndex==1}}" hidden='{{currentIndex==0}}'>
   <view wx:for="{{qiugouItem}}" wx:key="{{index}}" wx:for-item="Item" data-index="{{index}}" bindtap='qiugou'>
     <view class='header'>
       <image class='touxiang' src="{{Item.touxiang}}"></image> 
@@ -29,16 +46,13 @@
       </view>
       <view >{{Item.description}}</view>
       <view class='header'>
-      <view>位置：{{Item.destination}}</view>
-      <view>时间：{{Item.last_for_time}}</view>
+      <view style="margin-left: 10rpx;font-size: 30rpx;color: lightgray;">位置：{{Item.destination}}</view>
       </view>
   </view>
-</view>
+</view> -->
 
-<view style='border:black solid 1px' >
-  <view bindtap='CreateGou'>+</view>
-  <view id='create' hidden='{{show}}' >
+  <view id='create' class="cre" hidden='{{show==0}}' >
     <view bindtap='Createdaigou'>代购</view>
     <view bindtap='Createqiugou'>求购</view>
   </view>
-</view>
+  <view class="add" bindtap='CreateGou'><view  class="inadd" >+</view></view>

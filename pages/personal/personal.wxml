@@ -20,12 +20,10 @@
     <view>
       <image class = "l-icon" src = "../../icons/yonghu.png"></image>
     </view>
-    <view>
-      <text>个人信息</text>
-    </view>
-    <view>
+      <text style='margin-left:30rpx;'>Information</text>
+      <view>
       <image class = "r-icon" src = "../../icons/arrows_right.png"></image>
-    </view>
+      </view>
   </view>
 
   <view class="divLine"></view>
@@ -34,9 +32,7 @@
     <view>
       <image class = "l-icon" src = "../../icons/balance.png"></image>
     </view>
-    <view>
-      <text>我的余额</text>
-    </view>
+    <text style='margin-left:30rpx;'>MyBalance</text>
     <view>
       <image class = "r-icon" src ="../../icons/arrows_right.png"></image>
     </view>
@@ -49,9 +45,7 @@
     <view>
       <image class = "l-icon" src = "../../icons/service.png"></image>
     </view>
-    <view>
-      <text>联系客服</text>
-    </view>
+    <text style='margin-left:30rpx;'>Servicer</text>
     <view>
       <image class = "r-icon" src = "../../icons/arrows_right.png"></image>
     </view>

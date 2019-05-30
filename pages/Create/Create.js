@@ -22,6 +22,8 @@ Page({
    */
   onLoad: function (options) {
       var type = options.type;
+      console.log(type);
+      
       this.setData({
         type:type
       })
@@ -82,30 +84,40 @@ Page({
       var that = this;
       var imagePath = that.data.imagePath
       wx.uploadFile({
-        url: 'https://String',
+        url: 'http://119.23.218.7:8080/File/Upload',
         filePath:imagePath,
         name:'img',
         // header: {}, // 设置请求的 header
         // formData: {}, // HTTP 请求中其他额外的 form data
         success: function(res){
           // success
-          imgUrl = "http://119.23.218.7:8080/"+ res.imageUrl;
+          var type = that.data.type;
+          var res_data = JSON.parse(res.data);
+          console.log(typeof(res.data));
+          
+          console.log(res_data.imageUrl);
+          
+          var imgUrl = "http://119.23.218.7:8080/"+ res_data.imageUrl;
           var region = ''
           if(that.data.isChina){
             region = that.data.region[0]+that.data.region[1]+that.data.region[2]
           }
-          var destination = that.data.Country + region + that.data.loc_detail          
+          var index = that.data.index
+          var destination = that.data.Country[index] + region + that.data.loc_detail    
+          var description = that.data.description
+          console.log("log",type,imgUrl,destination,description);
+                
           wx.request({
-            url: 'https://URL',
+            url: 'http://172.18.32.138:3030/Create/Gou',    
             data: {
-              type:that.data.type,
+              type:type,
               destination:destination,
               imageUrl:imgUrl,
               description:description,
               last_for_time:''
             },
             method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-            // header: {}, // 设置请求的 header
+            header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
             success: function(res){
               // success
               console.log(res);

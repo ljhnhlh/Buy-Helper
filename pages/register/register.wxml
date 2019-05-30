@@ -1,10 +1,10 @@
 <!-- 如果只是展示用户头像昵称，可以使用 <open-data /> 组件 -->
-<open-data type="userAvatarUrl"></open-data>
-<open-data type="userNickName"></open-data>
+<open-data type="userAvatarUrl" class="tou"></open-data>
+<open-data type="userNickName" class="nickName"></open-data>
 
 
   <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-    <view class="picker">
+    <view class="picker"style="color:green" >
       所在学校：{{array[index]}}
     </view>
   </picker>

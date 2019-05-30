@@ -41,6 +41,7 @@ flex-direction: row;
   width: 25px;
   height: 25px;
   margin-right: 20px;
+  
 }
 
 .r-icon{

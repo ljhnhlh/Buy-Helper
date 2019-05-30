@@ -1,30 +1,34 @@
-<text wx:if="{{type==0}}" >创建代购</text>
-<text wx:if="{{type==1}}" >创建求购</text>
 
-<view>请输入代购地点</view>
-<picker bindchange="chooseCountry" value="{{index}}" range="{{Country}}">
-    <view class="picker">
-      国家：{{Country[index]}}
-    </view>
-</picker>
+<view style="margin:20rpx;">
+  <text class="title" wx:if="{{type==0}}" style="text-align:center;" >创建代购</text>
+  <text class="title" wx:if="{{type==1}}" style="text-align:center;">创建求购</text>
 
-<view wx:if="{{isChina}}" class="tui-picker-content">
-        <picker bindchange="ChooseRegion" mode = "region" value="{{region}}">
-          <view class="tui-picker-detail">
-          {{region[0]}}-{{region[1]}}-{{region[2]}}
-          </view>
-        </picker>
+  <view >代购地点</view>
+  <picker bindchange="chooseCountry" value="{{index}}" range="{{Country}}">
+      <view class="picker" class="pick">
+        国家：{{Country[index]}}
+      </view>
+  </picker>
+
+  <view wx:if="{{isChina}}" class="tui-picker-content pick" >
+    
+          <picker bindchange="ChooseRegion" mode = "region" value="{{region}}">
+            <view class="tui-picker-detail">
+          市区：  {{region[0]}}-{{region[1]}}-{{region[2]}}
+            </view>
+          </picker>
+  </view>
+  <view style="display: inline-block;"></view>
+  <view >地点详情:<input  bindinput="loc_detail" /></view>
+  <!-- <view wx:if="{{type==1}}">购品名称：<input content="asdflkfjds"/></view> -->
+  <view>
+      <image style="width:300rpx;height:300rpx;margin-top:20rpx;" src="{{hasChosen?imagePath:'/icons/uploadImage.png'}}" bindtap="uploadImage" ></image>
+  </view>
+  <view>
+      <!-- 应该要用text -->
+      购品描述：<input bindinput="gou_detail" value="..."  />
+  </view> 
 </view>
-<view >地点详情<input bindinput="loc_detail" /></view>
-
-<!-- <view wx:if="{{type==1}}">购品名称：<input content="asdflkfjds"/></view> -->
-<view>上传图片
-    <image class="" src="{{hasChosen?imagePath:'/icons/uploadImage.png'}}" bindtap="uploadImage" ></image>
-</view>
-<view>
-    <!-- 应该要用text -->
-    购品描述：<input bindinput="gou_detail" value="..."  />
-</view> 
 <!-- <view>价格区间：
     <input bindinput="price1"/> - <input bindinput="price2"/> ￥ </view> -->
 <button bindtap="CreateIssue">提交</button>

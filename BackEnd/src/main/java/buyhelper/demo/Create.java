@@ -469,9 +469,7 @@ public class Create {
         try{
             t = jdbcTemplate.update(sql,id);
             List<uidClass> uid2 = jdbcTemplate.query(SelectUid2,new Object[]{id},new BeanPropertyRowMapper(uidClass.class));
-            System.out.println(uid2.get(0));
             List<stars> starsAndNum = jdbcTemplate.query(getStars,new Object[]{uid2.get(0).getUid2()},new BeanPropertyRowMapper(stars.class));
-            System.out.println(starsAndNum);
             int num = starsAndNum.get(0).getNum();
             int sta = starsAndNum.get(0).getStars();
             sta = (num * sta + stars)/(num+1);

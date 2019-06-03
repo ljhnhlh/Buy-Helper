@@ -1,7 +1,8 @@
 .tab {
     display: inline-block;
     font-size: 30rpx;
-    font-display: center;
+    /* font-display: center; */
+    text-align: center;
     padding: 20rpx;
     width: 100pt;
 }

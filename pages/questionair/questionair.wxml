@@ -1,0 +1,3 @@
+<button bindtap="create">创建问卷</button>
+<button bindtap="fill">填写问卷</button>
+<button bindtap="get">获取问卷</button>

@@ -214,7 +214,7 @@ public class Create {
             sql = "insert  into buy_helper.sub_daigou(uid,did,description,payment,status)values (?,?,?,?,0)";
         }
         else {
-            sql = "insert  into buy_helper.sub_qiugou(uid,qid,description,payment,status)values (?,?,?,?,0)";
+            sql = "insert  into buy_helper.sub_qiugou(uid,did,description,payment,status)values (?,?,?,?,0)";
         }
         int t = 0;
         try{
@@ -242,7 +242,7 @@ public class Create {
         {
             sql = "select sid,description,payment,sub_daigou.status,avatarUrl from buy_helper.sub_daigou,buy_helper.user where did = ? and uid = openid;";
         }else {
-            sql = "select sid,description,payment,sub_qiugou.status,avatarUrl from buy_helper.sub_qiugou,buy_helper.user where qid = ? and uid = openid;";
+            sql = "select sid,description,payment,sub_qiugou.status,avatarUrl from buy_helper.sub_qiugou,buy_helper.user where did = ? and uid = openid;";
         }
         try {
             return  jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(sub_gou.class));
@@ -313,13 +313,19 @@ public class Create {
     }
 
     @RequestMapping(value = "/detail_daigou",method= RequestMethod.GET)
-    public JSONObject DetailDaigou(@RequestParam("id")int id){
+    public JSONObject DetailDaigou(@RequestParam("id")int id,@RequestParam("type")int type){
+        System.out.println("type");
+        System.out.println(type);
         String sql = "select imageUrl,status1_image,status2_image,status from daigou where did = ?";
+        if(type == 1){
+            sql = "select imageUrl,status1_image,status2_image,status from qiugou where did = ?";
+        }
         JSONObject jsonObject = new JSONObject();
         try{
             List<detail_daigou> temp = jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(detail_daigou.class));
+
             jsonObject.put("errcode",1);
-            jsonObject.put("errmsg","create successfully");
+            jsonObject.put("errmsg","load successfully");
             jsonObject.put("list",temp);
         }catch (Exception e){
             jsonObject.put("errcode",0);
@@ -329,7 +335,7 @@ public class Create {
     }
     @RequestMapping(value = "/detail_qiugou",method= RequestMethod.GET)
     public JSONObject DetailQiugou(@RequestParam("id")int id){
-        String sql = "select avatarUrl,nickname,stars,imageUrl,status1_image,status2_image,status from qiugou,user where did = ? and uid2 = openid";
+        String sql = "select imageUrl,status1_image,status2_image,status from daigou where did = ?";
         JSONObject jsonObject = new JSONObject();
         try{
             List<detail_daigou> temp = jdbcTemplate.query(sql,new Object[]{id},new BeanPropertyRowMapper(detail_daigou.class));

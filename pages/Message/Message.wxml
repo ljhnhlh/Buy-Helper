@@ -2,22 +2,41 @@
 <view  wx:for="{{tabname}}" wx:key = "{{index}}" data-index = "{{index}}"  class="tab {{currentIndex===index?'active':''}}" bindtap='select_nav'>{{item.message}}</view>
 </view>
 <view style='height:80rpx'></view>
-<view wx:if="{{currentIndex==0}}">
-<view wx:for="{{daigouItem}}" wx:key = "{{index}}" wx:for-item="item" data-index = "{{index}}" >
-  <view>
-    <view>{{item.nickName}}</view>
-    <view>{{item.place}}</view>
+<view wx:if="{{currentIndex==0}}" style="position:relative; margin: 10rpx;background-color: #fff;">
+  <view wx:for="{{daigouItem}}" style="margin-bottom: 30rpx;border-bottom: solid #F3F3F3 10rpx;" wx:key="{{index}}" data-index="{{index}}" wx:for-item="Item"   >
+    <view class='header'>
+        <image class='touxiang' src="{{Item.avatarUrl}}"></image> 
+        <view style="margin-left: 20rpx;margin-top: 20rpx;" >{{Item.nickname}}</view>
+        <view  class="stars" style="margin-left: 20rpx;margin-top: 20rpx;" wx:for="{{starsItem[index]}}" wx:key="index" wx:for-item="Item">
+            <image  src="/icons/stars.png" style="width:50rpx;height:50rpx;"  />
+        </view>
+        <button class="finish"  data-index="{{index}}" bindtap="conform">完成</button>
+    </view>
+    <view class="desc" bindtap='daigou' data-index="{{index}}">{{Item.description}}</view>
+    <view class='header'>
+    <view style="margin-left: 10rpx;font-size: 30rpx;color: lightgray;">位置：{{Item.destination}}</view>
+    </view>
   </view>
-  <text>{{item.description}}</text>
-  <view>{{item.state}}</view>
 </view>
+<modal title="我是标题" hidden="{{hideModal}}" bindconfirm="modalConfirm" bindcancel="modalCandel">
+<view wx:for="{{stars}}" wx:for-item="{{Item}}" wx:key="{{index}}" data-index="{{index}}" >
+  <image src="{{Item}}" />
 </view>
 
-<view wx:if="{{currentIndex==1}}" >
-<view wx:for="{{qiugouItem}}" wx:key = "{{index}}" wx:for-item="item" data-index = "{{index}}">
-    <view>{{item.nickName}}</view>
-  <view>{{item.place}}</view>
-  <text>{{item.description}}</text>
-  <view>{{item.state}}</view>
-</view>
+</modal>
+<view wx:if="{{currentIndex==1}}" style="margin: 10rpx;">
+  <view wx:for="{{qiugouItem}}" style="margin-bottom: 10rpx;background-color: #fff;" wx:key="{{index}}" data-index="{{index}}" wx:for-item="Item"   bindtap='qiugou'>
+    <view class='header'>
+      <image class='touxiang' src="{{Item.avatarUrl}}"></image> 
+      <view style="margin-left: 20rpx;margin-top: 20rpx;" >{{Item.nickname}}</view>
+      <view  class="stars" style="margin-left: 20rpx;margin-top: 20rpx;" wx:for="{{starsItem[index]}}" wx:key="index" wx:for-item="Item">
+          <image  src="/icons/stars.png" style="width:50rpx;height:50rpx;"  />
+      </view>
+      <button class="finish" >完成</button>
+    </view>
+    <view class="desc" >{{Item.description}}</view>
+    <view class='header'>
+    <view style="margin-left: 10rpx;font-size: 30rpx;color: lightgray;">位置：{{Item.destination}}</view>
+    </view>
+  </view>
 </view>

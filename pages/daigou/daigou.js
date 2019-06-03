@@ -47,26 +47,26 @@ Page({
         // header: {}, // 设置请求的 header
         success: function(res){
           // success
-          console.log(res);
+          // console.log(res);
           var itemTemp = res.data.list
-          console.log(itemTemp);
+          // console.log(itemTemp);
           
           var starsItem = []
             for(var x = 0;x < itemTemp.length;x++){
               var t = []
-              console.log(itemTemp[x]);
-              console.log(itemTemp[x].stars);
+              // console.log(itemTemp[x]);
+              // console.log(itemTemp[x].stars);
               
               for(var i = 0;i < itemTemp[x].stars;i++){
                   t.push('/icons/starts.png')
               }
-              console.log(t);
+              // console.log(t);
               
               starsItem.push(t)
             }
           if(res.data.errcode == 1){
             var item = res.data.list
-            console.log(item);
+            // console.log(item);
             
               if(index == 0){
                 that.setData({
@@ -74,7 +74,7 @@ Page({
                   starsItem:starsItem
                 })
               }else{
-                that.setData({
+                that.setData({ 
                   qiugouItem:item,
                   starsItem:starsItem
                 })
@@ -82,6 +82,7 @@ Page({
           }
           else{
             console.log(res.errmsg);
+
           }
         }
       })
@@ -91,13 +92,13 @@ Page({
   },
   daigou:function(e){
    var index = e.currentTarget.dataset.index
-   console.log("index",index);
+  //  console.log("index",index);
    
    //需要将daigouItem[index]解析成object
     var that = this;
     
     app.globalData.detail_info = that.data.daigouItem[index]
-    console.log(app.globalData);
+    // console.log(app.globalData);
     
     wx.navigateTo({
       url: "/pages/detail/detail?type=0"
@@ -105,9 +106,10 @@ Page({
   },
   qiugou:function(e){
     var index = e.currentTarget.dataset.index
+    // console.log("index",index);
     var that = this
     app.globalData.detail_info = that.data.qiugouItem[index]
-    console.log(app.globalData);
+    // console.log(app.globalData);
     //需要将daigouItem[index]解析成object
     wx.navigateTo({
       url: '/pages/detail/detail?type=1'
@@ -128,21 +130,21 @@ Page({
         // header: {}, // 设置请求的 header
         success: function(res){
           // success
-          console.log(res);
+          // console.log(res);
           
           if(res.data.errcode == 1){
             var item = res.data.list
-            console.log(item);
+            // console.log(item);
             var starsItem = []
             for(var x = 0;x < item.length;x++){
               var t = []
-              console.log(item[x]);
-              console.log(item[x].stars);
+              // console.log(item[x]);
+              // console.log(item[x].stars);
               
               for(var i = 0;i < item[x].stars;i++){
                   t.push('/icons/starts.png')
               }
-              console.log(t);
+              // console.log(t);f
               
               starsItem.push(t)
             }

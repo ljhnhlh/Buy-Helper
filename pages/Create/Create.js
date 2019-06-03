@@ -45,16 +45,6 @@ Page({
       description:e.detail.value
     })
   },
-  // price1:function (e) {  
-  //   this.setData({
-  //     price1:e.detail.value
-  //   })
-  // },
-  // price2:function (e) {
-  //   this.setData({
-  //     price2:e.detail.value
-  //   })
-  // },
   chooseCountry:function (e) {
     var value = e.detail.value;
     console.log(value);
@@ -98,9 +88,17 @@ Page({
           console.log(res_data.imageUrl);
           
           var imgUrl = "http://119.23.218.7:8080/"+ res_data.imageUrl;
+          console.log(imgUrl);
+          
           var region = ''
           if(that.data.isChina){
             region = that.data.region[0]+that.data.region[1]+that.data.region[2]
+            console.log(that.data.region[0]);
+            console.log(that.data.region[1]);
+            console.log(that.data.region[2]);
+            
+            
+            
           }
           var index = that.data.index
           var destination = that.data.Country[index] + region + that.data.loc_detail    
@@ -120,10 +118,18 @@ Page({
             header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
             success: function(res){
               // success
-              console.log(res);
-              wx.navigateBack({
-                delta: 1, // 回退前 delta(默认为1) 页面
-              })
+              if(res.data.errcode == 1){
+                wx.navigateBack({
+                  delta: 1, // 回退前 delta(默认为1) 页面
+                  success: function(){
+                    wx.showToast({
+                      title: '成功',
+                      icon:'success'
+                    })
+                  }
+                })
+              }
+              
             }
           })
         },

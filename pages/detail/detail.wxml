@@ -38,12 +38,13 @@
       <image style="height:100rpx;width:100rpx;" src="{{Item.avatarUrl}}" ></image>
       <view class='' style="margin-top:20rpx;">{{Item.description}}</view>
       <view class=''style="margin-top:20rpx;margin-left:10rpx;">{{Item.payment}}￥</view>
-      <button bindtap='' class=" btn" disabled='{{status == 1}}'>接受</button>
+      <button bindtap='accSub' class=" btn" disabled='{{Item.status == 1}}' data-index="{{index}}">接受</button>
       <button bindtap='getWeixing'class=" btn" >联系</button>
     </view>
   </view>
-  <button style="width:200rpx;font-size:30rpx;margin-bottom:10rpx；">添加</button>
+  <button style="width:200rpx;font-size:30rpx;margin-bottom:10rpx;" bindtap="addSubGou" >添加</button>
   
 <!--  style="width:200rpx;font-size:30rpx;margin-top:10rpx;margin-bottom:10rpx" -->
 </view>
 <button >联系方式</button> 
+<button wx:if="{{type == 1 && load_detail_item[0].status == 0}}" bindtap="acceptIssue" >接受订单</button>

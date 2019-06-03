@@ -8,6 +8,7 @@ Page({
    */
   data: {
     type:0,
+    id:0,
     detail_info:{
       did:0,
       avatarUrl:'',
@@ -30,6 +31,86 @@ Page({
     },
     imagePath:''
   },
+  addSubGou:function () {  
+    var type = this.data.type
+    console.log(this.data.detail_info);
+    var id = this.data.detail_info.did;
+    console.log(type,"id",id);
+    var url = '/pages/CreateSub/CreateSub?type='+type+'&id='+id;
+    wx.navigateTo({
+      url: url
+      
+    })
+  },
+  accSub:function (e) {  
+     var index = e.currentTarget.dataset.index
+     var that = this;
+     console.log(index);
+     console.log(e);
+     var id = that.data.sub_gouItem[index].sid
+     var type = that.data.type
+     var temp = that.data.sub_gouItem
+     temp[index].status = 1;;
+     that.setData({
+        sub_gouItem:temp
+     })
+     wx.request({
+       url: 'http://172.18.32.138:3030/Create/ReceiveSubGou',
+       data: {
+         id:id,
+         type:type
+       },
+       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+       header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+       success: function(res){
+         // success
+         if(res.data.errcode == 1){
+
+          wx.showToast({
+            title: '成功',
+            icon:'success'
+          })
+         }
+       },
+       fail: function() {
+         // fail
+       },
+       complete: function() {
+         // complete
+       }
+     })
+  },
+  acceptIssue:function () {
+    var that = this;
+    var type = that.data.type
+    var id = that.data.detail_info.did
+    wx.request({
+      url: 'http://172.18.32.138:3030/Create/ReceiveGou',
+      data: {
+        id:id,
+        type:type
+      },
+      method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+      header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+      success: function(res){
+        console.log(res);
+        
+        if(res.data.errcode == 1){
+          var load_detail_item = that.data.load_detail_item
+          load_detail_item[0].status = 1;
+          that.setData({
+            load_detail_item:load_detail_item
+          })
+          wx.showToast({
+            title: '成功',
+            icon:'success'
+          })
+         
+        }
+      }
+    })
+  }
+  ,
   renewTravel:function () {
     var that = this
     //获得状态
@@ -98,7 +179,7 @@ Page({
           type:type,
           imageUrl:'',
           id:id,
-          status:1
+          status:status
         },
         method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
         header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
@@ -107,7 +188,6 @@ Page({
           console.log("状态改变成功");
           var temp = that.data.load_detail_item
           temp[0].status = status+1
-      
           that.setData({
             load_detail_item:temp
           })
@@ -123,10 +203,12 @@ Page({
     console.log("options",options);
     
     var detail_info = app.globalData.detail_info
+    // console.log(detail_info);
+    
     var id = detail_info.did;
     var ty = options.type;
     
-    var url = 'http://172.18.32.138:3030/Create/detail_qiugou'
+    var url = 'http://172.18.32.138:3030/Create/detail_daigou'
     var type = 1
     if(ty === "0")
       {
@@ -136,26 +218,28 @@ Page({
 
 
     var stars = detail_info.stars
-    console.log(stars);
+    // console.log(stars);
     var starsItem = []
     var that = this
     for(var i = 0;i < stars;i++){
       starsItem.push('/icons/starts.png')
     }
-    console.log(starsItem);
+    // console.log(starsItem);
     
     
     wx.request({
       url: url,
-      data: {id:id},
+      data: {id:id,type:type},
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
       // header: {}, // 设置请求的 header
       success: function(res){
+        console.log("res",res);
         if(res.data.errcode == 1)
         {
-          console.log("res",res);
+          // console.log("res",res);
           
           console.log("list",res.data.list);
+
           
           that.setData({
             load_detail_item:res.data.list,
@@ -164,29 +248,28 @@ Page({
             id:id,
             detail_info:detail_info
           })
+          console.log("load_detail", that.data.load_detail_item);
+          wx.request({
+            url: 'http://172.18.32.138:3030/Create/onShow',
+            data: {
+                  type:type,
+                  id:id
+                },
+            method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+            // header: {}, // 设置请求的 header
+            success: function(res){
+              // success
+              console.log(res);
+              
+              that.setData({
+                sub_gouItem:res.data
+              })
+            }
+          })
           
           
         }
-        console.log(res.errmsg);
-
-        //加载sub_gou
-        wx.request({
-          url: 'http://172.18.32.138:3030/Create/onShow',
-          data: {
-                type:type,
-                id:id
-              },
-          method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-          // header: {}, // 设置请求的 header
-          success: function(res){
-            // success
-            console.log(res);
-            
-            that.setData({
-              sub_gouItem:res.data
-            })
-          }
-        })
+        // console.log(res.errmsg);
       }
     })
 
@@ -226,7 +309,27 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    //加载sub_gou
+    var that = this
+    var id = this.data.id
+    var type = this.data.type
+    wx.request({
+      url: 'http://172.18.32.138:3030/Create/onShow',
+      data: {
+            type:type,
+            id:id
+          },
+      method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+      // header: {}, // 设置请求的 header
+      success: function(res){
+        // success
+        console.log(res);
+        
+        that.setData({
+          sub_gouItem:res.data
+        })
+      }
+    })
   },
 
   /**

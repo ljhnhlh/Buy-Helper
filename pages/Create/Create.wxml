@@ -19,14 +19,14 @@
           </picker>
   </view>
   <view style="display: inline-block;"></view>
-  <view >地点详情:<input  bindinput="loc_detail" /></view>
+  <view >地点详情:<input  placeholder="请输入地点详情" bindinput="loc_detail" /></view>
   <!-- <view wx:if="{{type==1}}">购品名称：<input content="asdflkfjds"/></view> -->
   <view>
       <image style="width:300rpx;height:300rpx;margin-top:20rpx;" src="{{hasChosen?imagePath:'/icons/uploadImage.png'}}" bindtap="uploadImage" ></image>
   </view>
   <view>
       <!-- 应该要用text -->
-      购品描述：<input bindinput="gou_detail" value="..."  />
+      购品描述：<input bindinput="gou_detail" placeholder="请输入物品描述"  />
   </view> 
 </view>
 <!-- <view>价格区间：

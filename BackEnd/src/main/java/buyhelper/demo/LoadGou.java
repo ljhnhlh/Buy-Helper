@@ -8,6 +8,7 @@ public class LoadGou {
     private String destination;
     private String description;
     private String last_for_time;
+    private int state;
 
     public int getDid() {
         return did;
@@ -63,5 +64,13 @@ public class LoadGou {
 
     public void setLast_for_time(String last_for_time) {
         this.last_for_time = last_for_time;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

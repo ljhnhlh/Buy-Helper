@@ -82,7 +82,7 @@ Page({
         success: function(res){
           // success
           var type = that.data.type;
-          var res_data = JSON.parse(res.data);
+          var res_data = JSON.parse(res.data); 
           console.log(typeof(res.data));
           
           console.log(res_data.imageUrl);
@@ -96,9 +96,6 @@ Page({
             console.log(that.data.region[0]);
             console.log(that.data.region[1]);
             console.log(that.data.region[2]);
-            
-            
-            
           }
           var index = that.data.index
           var destination = that.data.Country[index] + region + that.data.loc_detail    

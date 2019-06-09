@@ -10,19 +10,20 @@
         <view  class="stars" style="margin-left: 20rpx;margin-top: 20rpx;" wx:for="{{starsItem[index]}}" wx:key="index" wx:for-item="Item">
             <image  src="/icons/stars.png" style="width:50rpx;height:50rpx;"  />
         </view>
-        <button class="finish"  data-index="{{index}}" bindtap="conform">完成</button>
+        <button class="finish" wx:if="{{Item.state != 2}}" data-index="{{index}}" bindtap="conform">完成</button>
     </view>
     <view class="desc" bindtap='daigou' data-index="{{index}}">{{Item.description}}</view>
     <view class='header'>
     <view style="margin-left: 10rpx;font-size: 30rpx;color: lightgray;">位置：{{Item.destination}}</view>
     </view>
   </view>
+      <view wx:if="{{Item.state == 2}}" style="color:lightred;">已完成</view>
 </view>
-<modal title="我是标题" hidden="{{hideModal}}" bindconfirm="modalConfirm" bindcancel="modalCandel">
-<view wx:for="{{stars}}" wx:for-item="{{Item}}" wx:key="{{index}}" data-index="{{index}}" >
-  <image src="{{Item}}" />
-</view>
-
+<modal title="输入评价并确认" hidden="{{hideModal}}" bindconfirm="modalConfirm" bindcancel="modalCandel">
+<!-- <view wx:for="{{stars}}" class="stars" wx:for-item="{{Item}}" wx:key="{{index}}" data-index="{{index}}" >
+  <image src="{{Item}}" style="width:50rpx;height:50rpx;" />
+</view> -->
+<input  style="font-color:lightgray;background:#F3F3F3;" placeholder="{{hideModal}}" bindinput="evaluate"/>
 </modal>
 <view wx:if="{{currentIndex==1}}" style="margin: 10rpx;">
   <view wx:for="{{qiugouItem}}" style="margin-bottom: 10rpx;background-color: #fff;" wx:key="{{index}}" data-index="{{index}}" wx:for-item="Item"   bindtap='qiugou'>
@@ -32,11 +33,12 @@
       <view  class="stars" style="margin-left: 20rpx;margin-top: 20rpx;" wx:for="{{starsItem[index]}}" wx:key="index" wx:for-item="Item">
           <image  src="/icons/stars.png" style="width:50rpx;height:50rpx;"  />
       </view>
-      <button class="finish" >完成</button>
+      <button wx:if="{{Item.state != 2}}" class="finish" >完成</button>
     </view>
     <view class="desc" >{{Item.description}}</view>
     <view class='header'>
     <view style="margin-left: 10rpx;font-size: 30rpx;color: lightgray;">位置：{{Item.destination}}</view>
     </view>
+    <view wx:if="{{Item.state == 2}}" style="color:lightred;">已完成</view>
   </view>
 </view>

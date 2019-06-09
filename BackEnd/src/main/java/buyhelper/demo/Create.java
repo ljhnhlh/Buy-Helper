@@ -2,7 +2,6 @@ package buyhelper.demo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
@@ -255,7 +254,6 @@ public class Create {
     @RequestMapping(value = "/onLoad",method = RequestMethod.GET)
     public JSONObject onLoad(@RequestParam("type")int type){
         //头像，昵称，星星，地点，描述,id
-
         String sql;
         int id;
         JSONObject jsonObject = new JSONObject();
@@ -287,7 +285,36 @@ public class Create {
         return  jsonObject;
     }
 
-    @RequestMapping(value = "downLoad",method = RequestMethod.GET)
+    @RequestMapping(value = "loadMy",method = RequestMethod.GET)
+    public JSONObject loadMy(@RequestParam("sessionId")String sessionId,@RequestParam("type")int type){
+        //头像，昵称，星星，地点，描述,id
+        String sql;
+        String openid = getOpenidFromSession(sessionId);
+        JSONObject jsonObject = new JSONObject();
+        if(type == 0){
+            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time,state from daigou, user where uid = ? and uid = openid order by did DESC ;";
+        }else {
+            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time,state from qiugou, user where uid = ? and uid = openid order by did DESC ;";
+        }
+        try{
+//            System.out.println(id);
+            List<LoadGou> temp = jdbcTemplate.query(sql,new Object[]{openid},new BeanPropertyRowMapper(LoadGou.class));
+            System.out.println(temp.get(0).getLast_for_time());
+            String t = temp.toString();
+            System.out.println(temp);
+            jsonObject.put("errcode",1);
+            jsonObject.put("errmsg","load successfully");
+            jsonObject.put("list",temp);
+
+        }catch (Exception e){
+            System.out.println(e);
+            jsonObject.put("errcode",0);
+            jsonObject.put("errmsg","load Failed");
+
+        }
+        return  jsonObject;
+    }
+    @RequestMapping(value = "/downLoad",method = RequestMethod.GET)
     public JSONObject downLoad(@RequestParam("type")int type,@RequestParam("id")int id){
         String sql;
 
@@ -450,14 +477,11 @@ public class Create {
 //    subgou的确认订单并评价stars
     @RequestMapping(value = "/FinishSubgou",method = RequestMethod.POST)
     public JSONObject FinishSubgou(@RequestHeader("sessionId")String sessionId,@RequestParam("type")int type,@RequestParam("id")int id,@RequestParam("stars")int stars){
-
         String openid = getOpenidFromSession(sessionId);
         String sql;
         String SelectUid2;
         String getStars;
         String updateStars;
-
-
         if(type == 0){
 
             sql = "update sub_daigou set status = 2 where sid = ?;";
@@ -480,7 +504,6 @@ public class Create {
             int sta = starsAndNum.get(0).getStars();
             sta = (num * sta + stars)/(num+1);
             t1 = jdbcTemplate.update(updateStars,sta,num+1,uid2.get(0).getUid2());
-
 
         }catch (Exception e){
             System.out.println(e);
@@ -507,6 +530,38 @@ public class Create {
 //    获取接单者的联系方式，貌似可以与下面的合并
 
 //    获取发单者的联系方式
+    @RequestMapping(value = "/getIssueWechat",method = RequestMethod.GET)
+    public JSONObject getIssueWechat(@RequestHeader("sessionId")String sessionId,@RequestParam("type")int type,@RequestParam("id")int id){
 
+        String openid = getOpenidFromSession(sessionId);
+//        type:0 代购发布者，1代购接单者，2求购发布者，3求购接单者 的微信
+        JSONObject jsonObject = new JSONObject();
+        String sql_in = "select 1 from sub_daigou where did = ? and uid = ?;";
+        String sql_t = "select wechat from daigou,user where uid = openid;";
+        switch (type){
+            case 0: sql_in = "select 1 from sub_daigou where did = ? and uid = ? limit 1;";sql_t = "select wechat from daigou,user where uid = openid and did = ?;";break;
+            case 1: sql_in = "select 1 from sub_daigou,daigou where sid = ? and sub_daigou.did = daigou.did and daigou.uid = ? limit 1;";
+                    sql_t = "select wechat from sub_daigou,daigou ,user where sid = ? and sub_daigou.did = daigou.did and daigou.uid = openid;";break;
+            case 2: sql_in = "select 1 from sub_qiugou where did = ? and uid = ? limit 1;";sql_t = "select wechat from qiugou,user where uid = openid and did = ?;";break;
+            case 3: sql_in = "select 1 from sub_qiugou,qiugou where sid = ? and sub_qiugou.did = qiugou.did and qiugou.uid = ? limit 1;";
+                    sql_t = "select wechat from sub_qiugou,qiugou ,user where sid = ? and sub_qiugou.did = qiugou.did and qiugou.uid = openid;";break;
+            default:break;
+        }
+        String wechat = "";
+        try {
+            int t = jdbcTemplate.queryForObject(sql_in,new Object[]{id,openid},int.class);
+            System.out.println(t);
+            wechat = jdbcTemplate.queryForObject(sql_t,new Object[]{id},String.class);
+        }catch (Exception e){
+            System.out.println(e);
+            jsonObject.put("errcode",0);
+            jsonObject.put("errmsg","无法获取");
+            return  jsonObject;
+        }
+        jsonObject.put("errcode",1);
+        jsonObject.put("errmsg","获取成功");
+        jsonObject.put("wechat",wechat);
+        return jsonObject;
+    }
 
 }

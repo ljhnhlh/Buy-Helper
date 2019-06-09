@@ -12,28 +12,80 @@ Page({
     daigouItem:[],
     qiugouItem:[],
     hideModal:true,
-    index:0,
-    stars:['/icons/stars.png','/icons/stars.png','/icons/stars.png','/icons/stars.png','/icons/stars.png',]
+
+    stars:['/icons/stars.png','/icons/stars.png','/icons/stars.png','/icons/stars.png','/icons/stars.png',],
+    star_num:0,
+    id:0
   },
   conform:function (e) {
     var that =this;
     var index = e.target.dataset.index
+    var type = that.data.currentIndex
+    var id = 0;
+    if(type == 0){
+      id = that.data.daigouItem[index].did
+    }else{
+      id = that.data.qiugouItem[index].did
+    }
     var hideModal = that.data.hideModal
+    
+    if(hideModal)
+       hideModal = false
+    else
+      hideModal = true
+    // hideModal = (hideModal+1)%2
     console.log(hideModal);
     
     that.setData({
-      index:index,
+      id:id,
       hideModal:hideModal
     })
    
   },
+  evaluate:function (e) {  
+    var star_num = e.detail.value;
+    this.setData({
+      star_num:star_num
+    })
+  },
+  modalCandel:function () {
+    this.setData({
+      hideModal:true
+    })
+  },
+  modalConfirm:function () {
+    var that = this
+    var star_num = this.data.star_num;
+    var type = that.data.currentIndex;
+    var id = that.data.id;
+    wx.request({
+      url: 'http://172.18.32.138:3030/Create/FinishSubgou',
+      data: {
+        type:type,
+        id:id,
+        stars:star_num
+      },
+      method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+      header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+      success: function(res){
+        wx.showToast({
+          title: '成功',
+          icon: 'success'
+        })
+        console.log(res);
+        
+        that.setData({
+          hideModal:true
+        })
+      },
+    })
+  },
   select_nav:function(e){
     var that = this
-    var index = e.target.dataset.index
-
+    var currentIndex = e.target.dataset.index
       wx.request({
         url: 'http://172.18.32.138:3030/Create/onLoad',
-        data: {type:index},
+        data: {type:currentIndex},
         method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
         // header: {}, // 设置请求的 header
         success: function(res){
@@ -59,7 +111,7 @@ Page({
             var item = res.data.list
             // console.log(item);
             
-              if(index == 0){
+              if(currentIndex == 0){
                 that.setData({
                   daigouItem:item,
                   starsItem:starsItem
@@ -77,7 +129,7 @@ Page({
         }
       })
     that.setData({
-      currentIndex:index
+      currentIndex:currentIndex
     })
   },
   daigou:function(e){
@@ -135,7 +187,6 @@ Page({
                   t.push('/icons/starts.png')
               }
               // console.log(t);f
-              
               starsItem.push(t)
             }
             if(index == 0){
@@ -149,6 +200,7 @@ Page({
                 starsItem:starsItem
               })
             }
+            console.log(item);
           }
           else{
             console.log(res.errmsg);

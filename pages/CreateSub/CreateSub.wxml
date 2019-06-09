@@ -2,9 +2,9 @@
 
 <view class="title" >创建一起购</view>
 
-<view >购品描述:<input bindinput="gouInput" value="..." /></view>
+<view >购品描述:<input bindinput="gouInput" placeholder="..." /></view>
 
-<view >预计价格: <input bindinput="paymentInput" /></view>
+<view >预计价格: <input bindinput="paymentInput" placeholder="请输入价格 /元" /></view>
 
 <button bindtap="create">提交</button>
 

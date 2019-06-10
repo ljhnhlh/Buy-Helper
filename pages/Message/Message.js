@@ -54,6 +54,8 @@ Page({
     })
   },
   modalConfirm:function () {
+    var sessionId = app.globalData.sessionId
+    console.log(sessionId);
     var that = this
     var star_num = this.data.star_num;
     var type = that.data.currentIndex;
@@ -66,7 +68,7 @@ Page({
         stars:star_num
       },
       method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-      header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+      header: {sessionId:sessionId,"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
       success: function(res){
         wx.showToast({
           title: '成功',
@@ -81,13 +83,15 @@ Page({
     })
   },
   select_nav:function(e){
+    var sessionId = app.globalData.sessionId
+    console.log(sessionId);
     var that = this
     var currentIndex = e.target.dataset.index
       wx.request({
-        url: 'http://172.18.32.138:3030/Create/onLoad',
+        url: 'http://172.18.32.138:3030/Create/loadMy',
         data: {type:currentIndex},
         method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-        // header: {}, // 设置请求的 header
+        header: {sessionId:sessionId}, // 设置请求的 header
         success: function(res){
           // success
           // console.log(res);
@@ -162,14 +166,16 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var sessionId = app.globalData.sessionId
+    console.log(sessionId);
     var that = this
     var index = 0
 
       wx.request({
-        url: 'http://172.18.32.138:3030/Create/onLoad',
+        url: 'http://172.18.32.138:3030/Create/loadMy',
         data: {type:index},
         method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-        // header: {}, // 设置请求的 header
+        header: {sessionId:sessionId}, // 设置请求的 header
         success: function(res){
           // success
           // console.log(res);

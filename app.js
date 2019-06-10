@@ -1,29 +1,41 @@
 App({
   onLaunch: function () {
-    var sessionId =  wx.getStorageSync('sessionId');
-    var expirTime =  wx.getStorageSync('expireTime');
-    var time = wx.getStorageSync('time');
-    console.log(sessionId +","+expirTime+","+time)
-    var needLogin = false
-    if(!sessionId || !expirTime)
-      needLogin = true;
-    else{
-      var now = new Date()
-      if(now - time >= expirTime)
-        needLogin = true;
-        console.log(now - time);
-    }
+    var that = this;
+    // 因为无法set storage，所以先不用
+    // var sessionId =  wx.getStorageSync('sessionId');
+    // var expirTime =  wx.getStorageSync('expireTime');
+    // var time = wx.getStorageSync('time');
+    
+
+    var needLogin = true;
+    // if(!sessionId || !expirTime)
+    //   needLogin = true;
+    // else{
+    //   var now = new Date()
+    //   if(now - time >= expirTime)
+    //     needLogin = true;
+    //   console.log("now and time",now - time);
+    // }
+    // console.log(needLogin);
+    
     if(needLogin){
       //需要登陆
       wx.login({
         success: function(res){
+          console.log(res.code);
           wx.request({
-            url: 'http:172.18.32.138',
+            url: 'http://172.18.32.138:3030/Create/Login',
             data: {code:res.code},
             method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-            // header: {}, // 设置请求的 header
+            header: {"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
             success: function(reqback){
-              if(reqback.errcode == 0){
+              console.log(reqback);
+              console.log(reqback.data);
+              
+              // var temp = JSON.parse(reqback.data)
+              // console.log(temp.errmsg);
+              var temp = reqback.data
+              if(temp.errcode == 0){
                 //需要注册
                 wx.redirectTo({
                   url: '/pages/register/register',
@@ -34,19 +46,8 @@ App({
                 console.log(reqback.errmsg);
               }else
               {
-                wx.setStorage({
-                  key: 'sessionId',
-                  data: reqback.sessionId
-                })
-                wx.setStorage({
-                  key: 'expireTime',
-                  data: reqback.expirTime
-                })
-                var now_time = new Date();
-                wx.setStorage({
-                  key: 'time',
-                  data: now_time
-                })
+                // 已测试
+                that.globalData.sessionId = reqback.data.sessionId
               }
             },
           })
@@ -67,6 +68,6 @@ App({
   },
   globalData: {
     sessionId: null,
-    detail_info:null
+    detail_info:null,
   }
 })

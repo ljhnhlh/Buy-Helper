@@ -1,20 +1,15 @@
 <view class="top-block">
 
-  <view>
-    <image class ="s-image;" src = "{{user_img}}"></image>
-  </view>
-
-  <view class = "per_info">
-    <view>
-      <text class = "name">{{nickname}}</text>
+  <view class="userinfo">
+    <view class="userinfo-avatar">
+      <open-data  type="userAvatarUrl"></open-data>
     </view>
-    <view>     
-      <text>{{phone}}</text>
-    </view>
+      <open-data type="userNickName" style="z-index: 2;color: white;"></open-data>
   </view>
-
+  
 </view>
-
+<image src = "/icons/bg.jpg" style="position: absolute;top:0%; z-index:1"></image>
+<view style="height: 60rpx;"></view>
 <view class = "mid-block">
   <view class = "list-item" bindtap='goTo_info'>
     <view>
@@ -38,7 +33,7 @@
     </view>
   </view>
 
-  <view class="divLine"></view>
+  <view class="divLine" ></view>
 
 
   <view class = "list-item" bindtap='goTo_service'>

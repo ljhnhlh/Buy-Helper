@@ -21,5 +21,25 @@ Page({
     wx.navigateTo({
       url: 'service/service',
     })
+  },
+  onLoad:function(options){
+    var that = this
+    wx.getUserInfo({
+      success: function(res){
+        console.log(res);
+        that.setData({
+          info:res.userInfo
+        })
+        
+      },
+      fail: function() {
+        // fail
+        console.log("fail");
+        
+      },
+      complete: function() {
+        // complete
+      }
+    })
   }
 })

@@ -1,4 +1,5 @@
 // pages/register/register.js
+var app = getApp()
 Page({
 
   data: {
@@ -21,8 +22,8 @@ Page({
     //注册
     wx.login({
       success: function(res){
-        console.log(res.code)
-        console.log(e.detail.userInfo.avatarUrl)
+        console.log("注册code",res.code)
+        console.log("注册头像",e.detail.userInfo.avatarUrl)
         wx.request({
           url: 'http://172.18.32.138:3030/Create/User',
           data: {
@@ -33,18 +34,30 @@ Page({
           },
           method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
           header: {"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
-          success: function(res){
-            if(res.errcode == 1){
-              wx.switchTab({
+          success: function(rest){
+            console.log("输出rest",rest);
+            console.log("输出rest code",rest.errcode);
+            if(rest.data.errcode == 1){
+              app.globalData.sessionId = rest.data.sessionId;
+              console.log("sessionId:",app.globalData.sessionId);
+              
+              wx.switchTab({  
                 url: '/pages/daigou/daigou'
+              })
+              wx.showToast({
+                title: '成功',
+                icon:'success'
               })
             }
             else{
               console.log(res);
-              
             }
           },
           fail: function() {
+            wx.showToast({
+              title: '系统错误',
+              icon:'success'
+            })
             console.log("系统错误");
           }
         })

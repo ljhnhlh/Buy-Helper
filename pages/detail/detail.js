@@ -19,18 +19,21 @@ Page({
       last_for_time:'wqerwqrwq'
     },
     'sub_gouItem':[
-      {'avatarUrl':'ljh','sid':0,'description':'','payment':0,'status':'1'},
-      {'avatarUrl':'ljh','sid':0,'description':'','payment':0,'status':'1'}
+      {'avatarUrl':'','sid':0,'description':'','payment':0,'status':'1'},
+      {'avatarUrl':'','sid':0,'description':'','payment':0,'status':'1'}
     ],
     starsItem:[],
     load_detail_item:{
       imageUrl:'',
-      status1_image:'',
-      status2_image:'',
+      status1_image:'/icons/add.png',
+      status2_image:'/icons/add.png',
       status:0
     },
-    imagePath:''
+    shwoMsg:'',
+    imagePath:'',
+    flag1:true
   },
+ 
   addSubGou:function () {  
     var type = this.data.type
     console.log(this.data.detail_info);
@@ -42,7 +45,114 @@ Page({
       
     })
   },
+  gouBtn:function(){
+    var sessionId = app.globalData.sessionId
+    console.log(sessionId);
+    
+    var that = this;
+
+    var type = that.data.type
+    var id = that.data.detail_info.did;
+    console.log("id:",id);
+    console.log(typeof(type));
+    
+    if(type == 0){
+      type = 0
+    }else{
+      type = 2
+    }
+    wx.request({
+      url: 'http://172.18.32.138:3030/Create/getIssueWechat',
+      data: {
+        type:type,
+        id:id
+      },
+      method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+      header: {sessionId:sessionId,"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+      success: function(res){
+        // success
+        console.log(res);
+        console.log(res.data.errcode);
+        
+        
+        var prom = new Promise(function (resolve, reject) {
+          if(res.data.errcode == 1){
+            console.log(res.data.wechat);
+            
+            that.setData({
+              shwoMsg:res.data.wechat
+            })
+          }else{
+            that.setData({
+              shwoMsg:"无法获取"
+            })
+          }
+          resolve("1")
+    })
+    prom.then(function(value){
+      that.toggleDialog()
+    })
+        }
+    })
+  },
+  getWeixing:function (e) {
+    var sessionId = app.globalData.sessionId
+    console.log(sessionId);
+    var that = this;
+    var index = e.currentTarget.dataset.index
+    var type = that.data.type
+    var id = that.data.sub_gouItem[index].sid;
+
+    console.log(typeof(type));
+
+    console.log("index",index,"id",id,"type",type);
+
+    if(type == 0)
+    {
+      type = 1;
+    }else{
+      type = 3;
+    }
+
+    wx.request({
+      url: 'http://172.18.32.138:3030/Create/getIssueWechat',
+      data: {
+        type:type,
+        id:id
+      },
+      method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+      header: {sessionId: sessionId,"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+      success: function(res){
+        // success
+        console.log(res);
+        console.log(res.data.errcode);
+        
+        
+        var prom = new Promise(function (resolve, reject) {
+          if(res.data.errcode == 1){
+            console.log(res.data.wechat);
+            
+            that.setData({
+              shwoMsg:res.data.wechat
+            })
+          }else{
+            that.setData({
+              shwoMsg:"无法获取"
+            })
+          }
+          resolve("1")
+    })
+    prom.then(function(value){
+      that.toggleDialog()
+    })
+    }
+    })
+
+
+  },
   accSub:function (e) {  
+    var sessionId = app.globalData.sessionId
+    console.log(sessionId);
      var index = e.currentTarget.dataset.index
      var that = this;
      console.log(index);
@@ -61,7 +171,7 @@ Page({
          type:type
        },
        method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-       header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+       header: {sessionId:sessionId,"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
        success: function(res){
          // success
          if(res.data.errcode == 1){
@@ -81,6 +191,8 @@ Page({
      })
   },
   acceptIssue:function () {
+    var sessionId = app.globalData.sessionId
+    console.log(sessionId);
     var that = this;
     var type = that.data.type
     var id = that.data.detail_info.did
@@ -91,12 +203,14 @@ Page({
         type:type
       },
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-      header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+      header: {sessionId:sessionId,"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
       success: function(res){
         console.log(res);
         
         if(res.data.errcode == 1){
           var load_detail_item = that.data.load_detail_item
+          
+          
           load_detail_item[0].status = 1;
           that.setData({
             load_detail_item:load_detail_item
@@ -112,6 +226,8 @@ Page({
   }
   ,
   renewTravel:function () {
+    var sessionId = app.globalData.sessionId
+    console.log(sessionId);
     var that = this
     //获得状态
     var status = that.data.load_detail_item[0].status
@@ -131,11 +247,17 @@ Page({
             name:'img',
             // header: {}, // 设置请求的 header
             // formData: {}, // HTTP 请求中其他额外的 form data
+
             success: function(rest){
               var imageUrl = "";
-              if(rest.data.errcode == 1){
-                imageUrl = "http://119.23.218.7:8080/"+ res.data.imageUrl
+              console.log("rest",rest.data.errcode);
+              var temp = JSON.parse(rest.data)
+              if(temp.errcode == 1){
+                imageUrl = "http://119.23.218.7:8080/"+ temp.imageUrl
+                console.log("imageUrl",imageUrl);
+                
               }
+              console.log("imageUrl","不超过");
               wx.request({
                 url: 'http://172.18.32.138:3030/Create/ChangeStatues ',
                 data: {
@@ -145,7 +267,7 @@ Page({
                   status:status
                 },
                 method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-                 header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+                 header: {sessionId:sessionId,"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
                 success: function(res){
                   console.log("上传成功");
                   var temp = that.data.load_detail_item;
@@ -182,7 +304,7 @@ Page({
           status:status
         },
         method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-        header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+        header: {sessionId:sessionId,"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
         success: function(res){
           // success
           console.log("状态改变成功");
@@ -195,11 +317,13 @@ Page({
       })
     }
   },
+  
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     
+    var sessionId = app.globalData.sessionId
     console.log("options",options);
     
     var detail_info = app.globalData.detail_info
@@ -297,7 +421,22 @@ Page({
     // }
     // })
   },
-
+  showPhoto:function(){
+    this.setData({
+      flag1: false
+    })
+  },
+  toggleDialog: function() {
+    this.setData({
+      showDialog: !this.data.showDialog
+    })
+  },
+    //关闭问卷选项弹窗
+close_qu_popup: function() {
+this.setData({
+  flag1: true
+})
+},
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

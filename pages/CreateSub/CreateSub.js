@@ -1,4 +1,5 @@
 // pages/CreateSub/CreateSub.js
+var app = getApp()
 Page({
 
   /**
@@ -12,7 +13,8 @@ Page({
   },
   create:function () {
     var that = this;
-
+    var sessionId = app.globalData.sessionId
+    console.log(sessionId);
     console.log(typeof(that.data.id),"type",typeof(that.data.type));
     wx.request({
       url: 'http://172.18.32.138:3030/Create/SubGou',
@@ -23,7 +25,7 @@ Page({
         payment:that.data.payment
       },
       method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-      header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+      header: {sessionId:sessionId,"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
       success: function(res){
         if(res.data.errcode == 1){
           

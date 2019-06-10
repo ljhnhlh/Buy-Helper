@@ -38,8 +38,8 @@ public class Create {
         // session_key
         // }
         RestTemplate restTemplate = new RestTemplate();
-        String appid = "wx08dea5e778f278de&";
-        String secret = "77fc034ff68fe7799e4e8723466a50d7&";
+        String appid = "wx7eb102dbaca57b06&";
+        String secret = "bb05527e488dfdae7bdfcc34853ca967&";
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid
                 + "&secret=" + secret
                 + "&js_code=" + code
@@ -127,6 +127,7 @@ public class Create {
     public JSONObject Login(@RequestParam("code") String code) {
 
         JSONObject res = GetOpenId(code);
+        System.out.println(res);
         if (res.getInteger("errcode") != 0)
             return res;
 
@@ -251,6 +252,35 @@ public class Create {
         }
     }
 
+    @RequestMapping(value = "/loadMy",method = RequestMethod.GET)
+    public JSONObject loadMy(@RequestParam("type")int type,@RequestHeader("sessionId")String sessionId){
+        String openid = getOpenidFromSession(sessionId);
+        JSONObject jsonObject = new JSONObject();
+        String sql;
+        if(type == 0){
+            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time from daigou, user where uid = ? and uid = openid order by did DESC;";
+        }else {
+            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time from qiugou, user where uid = ? and uid = openid order by did DESC;";
+        }
+        try{
+
+            List<LoadGou> temp = jdbcTemplate.query(sql,new Object[]{openid},new BeanPropertyRowMapper(LoadGou.class));
+            String t = temp.toString();
+            System.out.println("成功loadmy");
+            jsonObject.put("errcode",1);
+            jsonObject.put("errmsg","load successfully");
+            jsonObject.put("list",temp);
+
+        }catch (Exception e){
+            System.out.println(e);
+            jsonObject.put("errcode",0);
+            jsonObject.put("errmsg","load Failed");
+
+        }
+        return  jsonObject;
+
+    }
+
     @RequestMapping(value = "/onLoad",method = RequestMethod.GET)
     public JSONObject onLoad(@RequestParam("type")int type){
         //头像，昵称，星星，地点，描述,id
@@ -285,35 +315,36 @@ public class Create {
         return  jsonObject;
     }
 
-    @RequestMapping(value = "loadMy",method = RequestMethod.GET)
-    public JSONObject loadMy(@RequestParam("sessionId")String sessionId,@RequestParam("type")int type){
-        //头像，昵称，星星，地点，描述,id
-        String sql;
-        String openid = getOpenidFromSession(sessionId);
-        JSONObject jsonObject = new JSONObject();
-        if(type == 0){
-            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time,state from daigou, user where uid = ? and uid = openid order by did DESC ;";
-        }else {
-            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time,state from qiugou, user where uid = ? and uid = openid order by did DESC ;";
-        }
-        try{
-//            System.out.println(id);
-            List<LoadGou> temp = jdbcTemplate.query(sql,new Object[]{openid},new BeanPropertyRowMapper(LoadGou.class));
-            System.out.println(temp.get(0).getLast_for_time());
-            String t = temp.toString();
-            System.out.println(temp);
-            jsonObject.put("errcode",1);
-            jsonObject.put("errmsg","load successfully");
-            jsonObject.put("list",temp);
-
-        }catch (Exception e){
-            System.out.println(e);
-            jsonObject.put("errcode",0);
-            jsonObject.put("errmsg","load Failed");
-
-        }
-        return  jsonObject;
-    }
+//    @RequestMapping(value = "/loadMy",method = RequestMethod.GET)
+//    public JSONObject loadMy(@RequestHeader("sessionId")String sessionId,@RequestParam("type")int type){
+//        //头像，昵称，星星，地点，描述,id
+//        String sql;
+//        String openid = getOpenidFromSession(sessionId);
+//        JSONObject jsonObject = new JSONObject();
+//        if(type == 0){
+//            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time,state from daigou, user where uid = ? and uid = openid order by did DESC ;";
+//        }else {
+//            sql = "select did,avatarUrl,nickname,stars,destination,description,last_for_time,state from qiugou, user where uid = ? and uid = openid order by did DESC ;";
+//        }
+//        try{
+////            System.out.println(id);
+//            List<LoadGou> temp = jdbcTemplate.query(sql,new Object[]{openid},new BeanPropertyRowMapper(LoadGou.class));
+//            System.out.println(temp.get(0).getLast_for_time());
+//            String t = temp.toString();
+//            System.out.println(temp);
+//            jsonObject.put("errcode",1);
+//            jsonObject.put("errmsg","load successfully");
+//            jsonObject.put("list",temp);
+//
+//        }catch (Exception e){
+//            System.out.println(e);
+//            jsonObject.put("errcode",0);
+//            jsonObject.put("errmsg","load Failed");
+//
+//        }
+//        return  jsonObject;
+//    }
+//
     @RequestMapping(value = "/downLoad",method = RequestMethod.GET)
     public JSONObject downLoad(@RequestParam("type")int type,@RequestParam("id")int id){
         String sql;
@@ -474,6 +505,9 @@ public class Create {
     }
 
 //
+
+
+
 //    subgou的确认订单并评价stars
     @RequestMapping(value = "/FinishSubgou",method = RequestMethod.POST)
     public JSONObject FinishSubgou(@RequestHeader("sessionId")String sessionId,@RequestParam("type")int type,@RequestParam("id")int id,@RequestParam("stars")int stars){

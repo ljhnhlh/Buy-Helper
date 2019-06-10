@@ -1,4 +1,5 @@
 // pages/Create/Create.js
+var app = getApp()
 Page({
 
   /**
@@ -71,6 +72,8 @@ Page({
     })
     },
     CreateIssue:function () {
+      var sessionId = app.globalData.sessionId
+      console.log(sessionId);
       var that = this;
       var imagePath = that.data.imagePath
       wx.uploadFile({
@@ -112,7 +115,7 @@ Page({
               last_for_time:''
             },
             method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-            header: {sessionId:'847694c4-14dd-47b2-8922-facd8e379f47',"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
+            header: {sessionId:sessionId,"Content-Type": "application/x-www-form-urlencoded"}, // 设置请求的 header
             success: function(res){
               // success
               if(res.data.errcode == 1){

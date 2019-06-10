@@ -18,33 +18,60 @@
   
     <!-- 图片 -->
   <image src="{{load_detail_item[0].imageUrl}}" class='contentImage'></image>
-  
+  <view style="background-color: rgb(226, 222, 222);height:5rpx;width:650rpx;margin-left:40rpx"></view>
   <!-- 行程：准备，到达(票据)，返回(票据)，配送 -->
-  <view style="font-size:30rpx;margin-left:10rpx;">行程:
+  <view style="font-size:30rpx;margin-left:100rpx;">行程:
   <view class="progress {{load_detail_item[0].status >= 1? 'active':''}}">准备-</view>
   <view class="progress {{load_detail_item[0].status >= 2?'active':''}}">启程-</view>
   <view class="progress {{load_detail_item[0].status >= 3?'active':''}}">到达-</view>
   <view class="progress {{load_detail_item[0].status >= 4?'active':''}}">返回-</view>
   <view class="progress {{load_detail_item[0].status >= 5?'active':''}}">配送-</view>
   <view class="progress {{load_detail_item[0].status >= 6?'active':''}}">结束-o</view>
-  <button style="width:200rpx;font-size:30rpx;margin-top:10rpx;margin-bottom:10rpx" bindtap="renewTravel">更新行程</button>
+  <view class="displayBtn">
+  <button class="displayBtn-button"  bindtap="renewTravel">更新行程</button>
+  <button class="displayBtn-button"  bindtap="showPhoto">查看图片</button>
   </view>
+</view>
 
   <!-- 个人代购添加 -->
     <!-- for 列出已添加的用户 -->
-  <view class="title">预购</view>
+    <image src="/icons/divide.png" style="height: 40rpx;"></image>
+    <view style="width: 700rpx;margin:10rpx;">
+  <view class="title" style="color: lightpink">预购</view>
+  <view style="background-color: rgb(226, 222, 222);height:5rpx;width:650rpx;margin-left:40rpx"></view>
     <view   wx:for="{{sub_gouItem}}" wx:for-item="Item" style='margin-top:10rpx;' wx:key="{{index}}" data-index='{{index}}' >
       <view class="header">
       <image style="height:100rpx;width:100rpx;" src="{{Item.avatarUrl}}" ></image>
-      <view class='' style="margin-top:20rpx;">{{Item.description}}</view>
-      <view class=''style="margin-top:20rpx;margin-left:10rpx;">{{Item.payment}}￥</view>
+      <view class='' style="margin-top:20rpx;width: 20%;">{{Item.description}}</view>
+      <view class=''style="margin-top:20rpx;margin-left:10rpx;width:20%;">{{Item.payment}}￥</view>
       <button bindtap='accSub' class=" btn" disabled='{{Item.status == 1}}' data-index="{{index}}">接受</button>
-      <button bindtap='getWeixing'class=" btn" >联系</button>
+      <button bindtap='getWeixing' class=" btn" data-index="{{index}}">联系</button>
     </view>
   </view>
-  <button style="width:200rpx;font-size:30rpx;margin-bottom:10rpx;" bindtap="addSubGou" >添加</button>
-  
+  <button style="width:200rpx;font-size:30rpx;margin-bottom:10rpx;" bindtap="addSubGou" >+</button>
+</view>
 <!--  style="width:200rpx;font-size:30rpx;margin-top:10rpx;margin-bottom:10rpx" -->
 </view>
-<button >联系方式</button> 
+<button bindtap="gouBtn">联系方式</button> 
 <button wx:if="{{type == 1 && load_detail_item[0].status == 0}}" bindtap="acceptIssue" >接受订单</button>
+<view class="qu-popup" hidden="{{flag1}}" catchtouchmove="true" bindtap='close_qu_popup'>
+  <view class='qu-popup-container'>
+    <view class="qu-popup-choice">
+      <view bindtap='show_content'>
+        <image src="{{load_detail_item[0].status1_image}}"></image>
+      </view>
+      <view bindtap='show_result'>
+        <image src="{{load_detail_item[0].status2_image}}"></image>
+      </view>
+    </view>
+    <label class="qu-popup-btn" bindtap='close_quPopup'>关闭</label>
+  </view>
+</view>
+<view class="zan-dialog {{ showDialog ? 'zan-dialog--show' : '' }}">
+  <view class="zan-dialog__mask" bindtap="toggleDialog" />
+  <view class="zan-dialog__container">
+    <view style='padding:100rpx;'> 
+    	<view>微信号：{{shwoMsg}}</view>
+    </view>
+  </view>
+</view>

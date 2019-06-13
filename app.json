@@ -1,6 +1,5 @@
 {
   "pages": [
-    
     "pages/daigou/daigou",
     "pages/Create/Create",
     "pages/register/register",
@@ -21,31 +20,33 @@
     "pages/logs/logs"
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#FFB6C1",
     "navigationBarTitleText": "Gou",
     "navigationBarTextStyle": "white"
   },
 
   "tabBar": {
+    "selectedColor": "#FFB6C1",
+    "color": "#707070",
     "list": [
       {
         "pagePath": "pages/daigou/daigou",
         "text": "购",
-        "iconPath": "icons/icon.png",
-        "selectedIconPath": "icons/icon.png"
+        "iconPath": "icons/home1.png",
+        "selectedIconPath": "icons/home.png"
       },
       {
         "pagePath": "pages/Message/Message",
         "text": "消息",
-        "iconPath": "icons/icon.png",
-        "selectedIconPath": "icons/icon.png"
+        "iconPath": "icons/msg2.png",
+        "selectedIconPath": "icons/msg2_2.png"
       },
       {
         "pagePath": "pages/personal/personal",
         "text": "我",
-        "iconPath": "icons/icon.png",
-        "selectedIconPath": "icons/icon.png"
+        "iconPath": "icons/me2.png",
+        "selectedIconPath": "icons/me2_2.png"
       }
     ]
   },

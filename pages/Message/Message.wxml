@@ -23,7 +23,7 @@
 <!-- <view wx:for="{{stars}}" class="stars" wx:for-item="{{Item}}" wx:key="{{index}}" data-index="{{index}}" >
   <image src="{{Item}}" style="width:50rpx;height:50rpx;" />
 </view> -->
-<input  style="font-color:lightgray;background:#F3F3F3;" placeholder="{{hideModal}}" bindinput="evaluate"/>
+<input  style="font-color:lightgray;background:#F3F3F3;" placeholder="输入星星数给用户评价" bindinput="evaluate"/>
 </modal>
 <view wx:if="{{currentIndex==1}}" style="margin: 10rpx;">
   <view wx:for="{{qiugouItem}}" style="margin-bottom: 10rpx;background-color: #fff;" wx:key="{{index}}" data-index="{{index}}" wx:for-item="Item"   bindtap='qiugou'>

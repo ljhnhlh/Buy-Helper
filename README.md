@@ -7,3 +7,7 @@ Buy-Helper 是一个供大学生出游代购的应用
 - [数据库设计](https://github.com/ljhnhlh/Buy-Helper/tree/master/BackEnd/数据库设计)
 - [测试文档](https://github.com/ljhnhlh/Buy-Helper/blob/master/BackEnd/接口文档/接口文档.md)
 
+- [API 文档](https://github.com/ljhnhlh/Buy-Helper/blob/master/API文件.md)
+- [用户手册](https://github.com/ljhnhlh/Buy-Helper/blob/master/API文件.md)
+- [UI 设计文档](https://github.com/ljhnhlh/Buy-Helper/blob/master/UI.md)
+
